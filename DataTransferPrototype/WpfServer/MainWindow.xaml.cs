@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -56,8 +57,6 @@ namespace WpfServer
 
 		private TcpPolicyServer myPolicyServer = new TcpPolicyServer();
 		private IDuplexStringMessageReceiver CommandReceiver;
-
-		//private IDuplexTypedMessageReceiver<byte[],byte[]> Worker4504Receiver;
 		private IDuplexInputChannel Worker4504InputChannel;
 
 		public void StartServer()
@@ -123,17 +122,94 @@ namespace WpfServer
 		}
 
 		// The method is called when a message from the client is received.
-		private void MessageReceived(object sender, StringRequestReceivedEventArgs e)
+		private async void MessageReceived(object sender, StringRequestReceivedEventArgs e)
 		{
-			Logger.Info("Received : " + e.RequestMessage);
+			Logger.Info("Received : " + e.RequestMessage + " from " + e.ResponseReceiverId);
+			CommandReceiver.SendResponseMessage(e.ResponseReceiverId, e.RequestMessage);
 
 			// Analyze message
 				// split strings
-				// receiving responsereceiverid from client
+			string[] received = e.RequestMessage.Split('|');
+			//Logger.Info("Split");
+			foreach (string s in received)
+			{
+				//Logger.Info(s);
+			}
+			// version|command|target    |param1|param2
+			// 1      |send   |responseid|123456|10
+			// 1      |receive|responseid|123456|10
+			// 1      |notify |responseid|open  |0
+			// 1      |notify |responseid|close |0
+
+			// receiving responsereceiverid from client
+			// identify command
+			// TODO:Try catch
+			double version = double.Parse(received[0]);
+			string command = received[1];
+			string target = received[2];
+			string param1 = received[3];
+			string param2 = received[4];
+
+			Logger.Info("Split " + version + " " + command + " " + target + " " + param1 + " " + param2);
+			//Logger.Info("Version : " + version);
+			//Logger.Info("Command : " + command);
+			//Logger.Info("Target : " + target);
+			//Logger.Info("Param1 : " + param1);
+			//Logger.Info("Param2 : " + param2);
+
+			if (version == 1.0)
+			{
+				if (command.Equals("send"))
+				{
+					// convert param to appropriate type
+					// TODO:tryparse
+					int length = int.Parse(param1);
+					int repeat = int.Parse(param2);
+
+					// Send a message.
+					byte[] data = new byte[length]; // initialize 1MB data
+					//byte[] data = new byte[10]; // initialize 1MB data
+					Random random = new Random();
+					random.NextBytes(data);
+					
+					int i = 0;
+					string s = "a";
+					Logger.Info("Start sending " + length + " bytes of data " + repeat + " times to " + target);
+					Stopwatch stopwatch = new Stopwatch();
+					stopwatch.Start();
+					CommandReceiver.SendResponseMessage(e.ResponseReceiverId, s);
+					do
+					{
+						Worker4504InputChannel.SendResponseMessage(target, data);
+
+						i++;
+					} while (i<repeat);
+					s = "z";
+					CommandReceiver.SendResponseMessage(e.ResponseReceiverId, s);
+					stopwatch.Stop();
+					Logger.Info("Finished sending " + length + " bytes of data " + repeat + " times to " + target + " in " + stopwatch.ElapsedMilliseconds + " milliseconds");
+				}
+				else if (command.Equals("receive"))
+				{
+					
+				}
+				else if (command.Equals("notify"))
+				{
+
+				}
+				else
+				{
+					Logger.Error("Unknown command : " + command);                    
+				}
+			}
+			else
+			{
+				Logger.Error("Unknown command : " + e.RequestMessage);
+			}
+
 			// Calculate mtu
 			// Warm up stopwatch
 			// Send message
-			CommandReceiver.SendResponseMessage(e.ResponseReceiverId, e.RequestMessage);
 		}
 
 		private void Window_Closed(object sender, EventArgs e)
@@ -150,8 +226,9 @@ namespace WpfServer
 			{
 				ConnectedClientsListBox.Items.Add(e.ResponseReceiverId);
 			});
-			Logger.Info("ResponseReceiverId : " + e.ResponseReceiverId);
-			Logger.Info("SenderAddress : " + e.SenderAddress);
+			Logger.Info("Connected " + e.ResponseReceiverId);
+			//Logger.Info("ResponseReceiverId : " + e.ResponseReceiverId);
+			//Logger.Info("SenderAddress : " + e.SenderAddress);
 		}
 
 		// The method is called when a client is disconnected.
@@ -163,8 +240,9 @@ namespace WpfServer
 			{
 				ConnectedClientsListBox.Items.Remove(e.ResponseReceiverId);
 			});
-			Logger.Info("ResponseReceiverId : " + e.ResponseReceiverId);
-			Logger.Info("SenderAddress : " + e.SenderAddress);
+			Logger.Info("Disconnected " + e.ResponseReceiverId);
+			//Logger.Info("ResponseReceiverId : " + e.ResponseReceiverId);
+			//Logger.Info("SenderAddress : " + e.SenderAddress);
 		}
 
 		private void BroadcastMessage(string s)

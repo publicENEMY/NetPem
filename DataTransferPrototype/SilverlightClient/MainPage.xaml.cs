@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Windows;
@@ -87,14 +88,19 @@ namespace SilverlightClient
 		{
 			if (InitializeCommandConnection())
 			{
-				CommandMessageSender.SendMessage("Give|Me|Data|1048576");	
+				// 1|send|responseid|123456|10
+				if (InitializeWorkerConnection())
+				{
+					//CommandMessageSender.SendMessage("1|send|" + Worker4504OutputChannel.ResponseReceiverId + "|1048576|100");
+					//CommandMessageSender.SendMessage("1|send|" + Worker4504OutputChannel.ResponseReceiverId + "|104857600|1"); //
+					//CommandMessageSender.SendMessage("1|send|" + Worker4504OutputChannel.ResponseReceiverId + "|1440|72900"); //2184ms
+					CommandMessageSender.SendMessage("1|send|" + Worker4504OutputChannel.ResponseReceiverId + "|104976000|1"); //344ms
+				}
 			}
 
-			//test 
-			InitializeWorkerConnection();
 		}
 
-		private IDuplexTypedMessageSender<byte[], byte[]>[] WorkerMessageSender = new IDuplexTypedMessageSender<byte[], byte[]>[256];
+		//private IDuplexTypedMessageSender<byte[], byte[]>[] WorkerMessageSender = new IDuplexTypedMessageSender<byte[], byte[]>[256];
 		//private IDuplexTypedMessageSender<byte[], byte[]> WorkerMessageSender;
 		private IDuplexStringMessageSender CommandMessageSender;
 
@@ -133,9 +139,44 @@ namespace SilverlightClient
 			}
 		}
 
+		// TODO:optimize this
+		// global stopwatch
+		Stopwatch stopwatch = new Stopwatch();
+		private int packetCounter = 0;
+
+		public void Disconnect()
+		{
+			// close all connection
+			CommandMessageSender.DetachDuplexOutputChannel();
+			Worker4504OutputChannel.CloseConnection();
+		}
+
+
 		private void CommandResponseReceived(object sender, StringResponseReceivedEventArgs e)
 		{
-			Log("Received : " + e.ResponseMessage);
+			Log("Received CMD : " + e.ResponseMessage);
+
+			if (e.ResponseMessage.Length == 1)
+			{
+				// this is a command from server
+				if (e.ResponseMessage.Equals("a"))
+				{
+					// start
+					stopwatch.Start();
+					packetCounter = 0;
+				}
+				else if (e.ResponseMessage.Equals("z"))
+				{
+					// stop
+					//stopwatch.Stop();
+
+					// disconnect
+					//Disconnect();
+
+					// display report
+					//Log("Received completed. Total " + packetCounter + " packets in " + stopwatch.ElapsedMilliseconds + " milliseconds.");
+				}
+			}
 
 			// Analyze command received(received list of server to connect to) ip:port
 			// if download
@@ -178,26 +219,43 @@ namespace SilverlightClient
 
 			// Open connection and be able to send messages and receive response messages.
 			Worker4504OutputChannel.OpenConnection();
-			Log("Channel id : " + Worker4504OutputChannel.ChannelId);
+			//Log("ChannelId : " + Worker4504OutputChannel.ChannelId);
+			//Log("ResponseReceiverId : " + Worker4504OutputChannel.ResponseReceiverId);
+
 
 			// Send a message.
-			byte[] data = new byte[1048576]; // initialize 1MB data
-			//byte[] data = new byte[10]; // initialize 1MB data
-			Random random = new Random();
-			random.NextBytes(data);
-			Worker4504OutputChannel.SendMessage(data);
-			Log("Sent data length : " + data.Length);
+			//byte[] data = new byte[1048576]; // initialize 1MB data
+			////byte[] data = new byte[10]; // initialize 1MB data
+			//Random random = new Random();
+			//random.NextBytes(data);
+			//Worker4504OutputChannel.SendMessage(data);
+			//Log("Sent data length : " + data.Length);
 
 			// Close connection.
 			//Worker4504OutputChannel.CloseConnection();
 
-			return true;
+			if (Worker4504OutputChannel.IsConnected)
+			{
+				return true;		        
+			}
+			else
+			{
+				return false;
+			}
 		}
 
 		void Worker4504OutputChannel_ResponseMessageReceived(object sender, DuplexChannelMessageEventArgs e)
 		{
-			Log("Received data length : " + (e.Message as byte[]).Length);
-			Log("ChannelId : " + e.ChannelId);
+			Log("Received WRK no " + packetCounter + " length " + (e.Message as byte[]).Length + " from " + e.ResponseReceiverId);
+
+			packetCounter++;
+
+			// temp
+			stopwatch.Stop();
+			Log("Received completed. Total " + packetCounter + " packets in " + stopwatch.ElapsedMilliseconds + " milliseconds.");
+			
+			//Log("ChannelId : " + e.ChannelId);
+			//Log("ResponseReceiverId : " + e.ResponseReceiverId);
 
 			//string s = BitConverter.ToString(e.Message as byte[]);
 			//Log("Received : " + s);
@@ -208,24 +266,35 @@ namespace SilverlightClient
 
 		void Worker4504OutputChannel_ConnectionOpened(object sender, DuplexChannelEventArgs e)
 		{
-			Log("Worker 4504 connected");
-			Log("ChannelId : " + e.ChannelId);
-			Log("ResponseReceiverId : " + e.ResponseReceiverId);
-			Log("SenderAddress : " + e.SenderAddress);
+			Log("Worker 4504 connected to " + e.ResponseReceiverId);
+			//Log("ChannelId : " + e.ChannelId);
+			//Log("ResponseReceiverId : " + e.ResponseReceiverId);
+			//Log("SenderAddress : " + e.SenderAddress);
 
 			//send to server connection id
-			CommandMessageSender.SendMessage("ResponseReceiverId|Open|" + e.ResponseReceiverId + "|");	
+			// 1      |send   |responseid|123456|10
+			// 1      |receive|responseid|123456|10
+			// 1      |notify |responseid|open  |0
+			// 1      |notify |responseid|close |0
+			CommandMessageSender.SendMessage("1|notify|" + e.ResponseReceiverId + "|open|0");	
 		}
 
 		void Worker4504OutputChannel_ConnectionClosed(object sender, DuplexChannelEventArgs e)
 		{
-			Log("Worker 4504 disconnected");
-			Log("ChannelId : " + e.ChannelId);
-			Log("ResponseReceiverId : " + e.ResponseReceiverId);
-			Log("SenderAddress : " + e.SenderAddress);
+			Log("Worker 4504 disconnected to " + e.ResponseReceiverId);
+			//Log("ChannelId : " + e.ChannelId);
+			//Log("ResponseReceiverId : " + e.ResponseReceiverId);
+			//Log("SenderAddress : " + e.SenderAddress);
 
 			//notify server closed connection id
-			CommandMessageSender.SendMessage("ResponseReceiverId|Closed|" + e.ResponseReceiverId + "|");
+			try
+			{
+				// probably unable to execute due to client already dc
+				CommandMessageSender.SendMessage("1|notify|" + e.ResponseReceiverId + "|close|0");
+			}
+			catch (Exception)
+			{
+			}
 		}
 	}
 }
