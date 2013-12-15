@@ -25,17 +25,18 @@
 				<TextBlock TextWrapping="Wrap" Text="Received" VerticalAlignment="Center"/>
 				<TextBox x:Name="textBox2" Height="23" TextWrapping="Wrap" />
 			</StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Button Content="Download 1MB" Click="Download1MB"/>
-                <Button Content="Button"/>
-                <Button Content="Button"/>
-                <Button Content="Button"/>
-                <Button Content="Button"/>
-                <Button Content="Button"/>
-            </StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<Button x:Name="Download1MBButton" Content="Download 1MB" Click="Download1MB"/>
+				<Button Content="Button"/>
+				<Button Content="Button"/>
+				<Button Content="Button"/>
+				<Button Content="Button"/>
+				<Button Content="Button"/>
+			</StackPanel>
+            <Button Content="Clear logs" Click="Button_Click"/>
         </StackPanel>
 
-		<ListBox x:Name="LogListBox" Margin="10,150,10,10" />
+		<ListBox x:Name="LogListBox" Margin="10,167,10,10" />
 
 	</Grid>
 </UserControl>

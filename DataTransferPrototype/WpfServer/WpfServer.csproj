@@ -43,6 +43,12 @@
     <Reference Include="NLog.Extended">
       <HintPath>..\packages\NLog.Extended.2.1.0.1\lib\net45-full\NLog.Extended.dll</HintPath>
     </Reference>
+    <Reference Include="PacketDotNet">
+      <HintPath>..\packages\Sharp_Pcap.4.2.0\lib\PacketDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpPcap">
+      <HintPath>..\packages\Sharp_Pcap.4.2.0\lib\SharpPcap.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Reactive.Core">

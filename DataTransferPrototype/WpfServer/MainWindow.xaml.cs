@@ -125,7 +125,13 @@ namespace WpfServer
 		private async void MessageReceived(object sender, StringRequestReceivedEventArgs e)
 		{
 			Logger.Info("Received : " + e.RequestMessage + " from " + e.ResponseReceiverId);
-			CommandReceiver.SendResponseMessage(e.ResponseReceiverId, e.RequestMessage);
+			try
+			{
+				CommandReceiver.SendResponseMessage(e.ResponseReceiverId, e.RequestMessage);
+			}
+			catch (Exception)
+			{
+			}
 
 			// Analyze message
 				// split strings

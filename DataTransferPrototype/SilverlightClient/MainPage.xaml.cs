@@ -84,17 +84,24 @@ namespace SilverlightClient
 		}
 
 #endregion
+
+		//private int repeat = 72900; private int bytesLength = 1440;
+		private int repeat = 1; private int bytesLength = 104976000;
 		private void Download1MB(object sender, RoutedEventArgs e)
 		{
+			var b = sender as Button;
+			b.IsEnabled = false;
+
 			if (InitializeCommandConnection())
 			{
 				// 1|send|responseid|123456|10
 				if (InitializeWorkerConnection())
 				{
-					//CommandMessageSender.SendMessage("1|send|" + Worker4504OutputChannel.ResponseReceiverId + "|1048576|100");
-					//CommandMessageSender.SendMessage("1|send|" + Worker4504OutputChannel.ResponseReceiverId + "|104857600|1"); //
-					//CommandMessageSender.SendMessage("1|send|" + Worker4504OutputChannel.ResponseReceiverId + "|1440|72900"); //2184ms
-					CommandMessageSender.SendMessage("1|send|" + Worker4504OutputChannel.ResponseReceiverId + "|104976000|1"); //344ms
+					//CommandMessageSender.SendMessage("1|send|" + Worker4504OutputChannel.ResponseReceiverId + "|1048576|" + repeat); // 1 repeat
+					//CommandMessageSender.SendMessage("1|send|" + Worker4504OutputChannel.ResponseReceiverId + "|104857600|" + repeat); // 100 repeat
+					//CommandMessageSender.SendMessage("1|send|" + Worker4504OutputChannel.ResponseReceiverId + "|1440|" + repeat); //1170ms 72900 repeat
+					//CommandMessageSender.SendMessage("1|send|" + Worker4504OutputChannel.ResponseReceiverId + "|104976000|" + repeat); //344ms 1 repeat
+					CommandMessageSender.SendMessage("1|send|" + Worker4504OutputChannel.ResponseReceiverId + "|" + bytesLength + "|" + repeat); //344ms 1 repeat
 				}
 			}
 
@@ -144,6 +151,7 @@ namespace SilverlightClient
 		Stopwatch stopwatch = new Stopwatch();
 		private int packetCounter = 0;
 
+		// TODO:Allow disconnect
 		public void Disconnect()
 		{
 			// close all connection
@@ -162,20 +170,33 @@ namespace SilverlightClient
 				if (e.ResponseMessage.Equals("a"))
 				{
 					// start
+					stopwatch.Reset();
 					stopwatch.Start();
 					packetCounter = 0;
 				}
-				else if (e.ResponseMessage.Equals("z"))
-				{
-					// stop
-					//stopwatch.Stop();
+				// This is irrelevant
+				//else if (e.ResponseMessage.Equals("z"))
+				//{
+				//	// stop
+				//	//stopwatch.Stop();
 
-					// disconnect
-					//Disconnect();
+				//	// disconnect
+				//	//Disconnect();
 
-					// display report
-					//Log("Received completed. Total " + packetCounter + " packets in " + stopwatch.ElapsedMilliseconds + " milliseconds.");
-				}
+				//	// display report
+				//	//Log("Received completed. Total " + packetCounter + " packets in " + stopwatch.ElapsedMilliseconds + " milliseconds.");
+
+				//	//if (packetCounter == repeat)
+				//	//if (packetCounter >= repeat)
+				//	if (packetCounter != 0)
+				//	{
+				//		stopwatch.Stop();
+				//		Log("Received completed. Total " + packetCounter + " packets in " + stopwatch.ElapsedMilliseconds + " milliseconds.");
+				//		//Disconnect();
+				//		packetCounter = 0;
+				//		//repeat = 0;
+				//	}
+				//}
 			}
 
 			// Analyze command received(received list of server to connect to) ip:port
@@ -246,14 +267,34 @@ namespace SilverlightClient
 
 		void Worker4504OutputChannel_ResponseMessageReceived(object sender, DuplexChannelMessageEventArgs e)
 		{
-			Log("Received WRK no " + packetCounter + " length " + (e.Message as byte[]).Length + " from " + e.ResponseReceiverId);
-
 			packetCounter++;
 
 			// temp
-			stopwatch.Stop();
-			Log("Received completed. Total " + packetCounter + " packets in " + stopwatch.ElapsedMilliseconds + " milliseconds.");
-			
+			if (packetCounter >= (repeat - 1)) 
+			//if (packetCounter == repeat)
+			//if (packetCounter >= repeat)
+			{
+				stopwatch.Stop();
+				Disconnect();
+
+				int sizeTransfered = packetCounter*bytesLength;
+				double MBps = ((double)sizeTransfered / 1048576) / ((double)stopwatch.ElapsedMilliseconds / 1000);
+				double Mbps = (((double)sizeTransfered * 8) / 1048576) / ((double)stopwatch.ElapsedMilliseconds / 1000);
+
+				Log("Received completed.");
+				Log("Total packets   : " + packetCounter); // should equals to repeat
+				Log("Packets length  : " + bytesLength + " bytes");
+				Log("Duration        : " + stopwatch.ElapsedMilliseconds + " ms");
+				Log("Size transfered : " + sizeTransfered + " bytes");
+				Log("Bandwidth       : " + MBps + " MB/s");
+				Log("Bandwidth       : " + Mbps + " Mb/s");
+				Log("");
+
+				packetCounter = 0;
+				//repeat = 0;
+			}
+			//Log("Received WRK no " + packetCounter + " length " + (e.Message as byte[]).Length + " from " + e.ResponseReceiverId);
+
 			//Log("ChannelId : " + e.ChannelId);
 			//Log("ResponseReceiverId : " + e.ResponseReceiverId);
 
@@ -295,6 +336,46 @@ namespace SilverlightClient
 			catch (Exception)
 			{
 			}
+
+			// Enable all button when task completed
+			EnableAllButton();
+		}
+
+		private void EnableAllButton()
+		{
+			// check if we not in main thread
+			if (!Dispatcher.CheckAccess())
+			{
+				// call same method in main thread
+				Dispatcher.BeginInvoke(() =>
+				{
+					EnableAllButton();
+				});
+				return;
+			}
+			// in main thread now
+			Download1MBButton.IsEnabled = true;
+		}
+
+		private void Button_Click(object sender, RoutedEventArgs e)
+		{
+			clearLogs();
+		}
+
+		void clearLogs()
+		{
+			// check if we not in main thread
+			if (!Dispatcher.CheckAccess())
+			{
+				// call same method in main thread
+				Dispatcher.BeginInvoke(() =>
+				{
+					clearLogs();
+				});
+				return;
+			}
+			// in main thread now
+			LogListBox.Items.Clear();
 		}
 	}
 }
