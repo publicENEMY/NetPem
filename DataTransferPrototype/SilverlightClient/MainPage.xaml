@@ -6,37 +6,30 @@
 	mc:Ignorable="d"
 	d:DesignHeight="300" d:DesignWidth="400">
 
-	<Grid x:Name="LayoutRoot" Background="White">
-		<StackPanel  >
-			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
-				<TextBlock TextWrapping="Wrap" Text="Server ip" VerticalAlignment="Center"/>
-				<TextBox Height="23" TextWrapping="Wrap" Text="TextBox" />
-			</StackPanel>
-			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
-				<TextBlock TextWrapping="Wrap" Text="Server port" VerticalAlignment="Center"/>
-				<TextBox Height="23" TextWrapping="Wrap" Text="TextBox" />
-			</StackPanel>
-			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
-				<TextBlock TextWrapping="Wrap" Text="Send" VerticalAlignment="Center"/>
-				<TextBox x:Name="textBox1" Height="23" TextWrapping="Wrap" Text="from client" />
-			</StackPanel>
-			<Button x:Name="SendMessage" Content="SendMessage" Click="SendMessage_Click"/>
-			<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
-				<TextBlock TextWrapping="Wrap" Text="Received" VerticalAlignment="Center"/>
-				<TextBox x:Name="textBox2" Height="23" TextWrapping="Wrap" />
-			</StackPanel>
-			<StackPanel Orientation="Horizontal">
-				<Button x:Name="Download1MBButton" Content="Download 1MB" Click="Download1MB"/>
-				<Button Content="Button"/>
-				<Button Content="Button"/>
-				<Button Content="Button"/>
-				<Button Content="Button"/>
-				<Button Content="Button"/>
-			</StackPanel>
-            <Button Content="Clear logs" Click="Button_Click"/>
+    <Grid x:Name="LayoutRoot" Background="White">
+        <StackPanel  >
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="Download1MBButton" Content="Download 1MB" Click="Download1MB"/>
+                <Button x:Name="Download5MBButton" Content="Download 5MB" Click="Download5MB"/>
+                <Button x:Name="Download10MBButton" Content="Download 10MB" Click="Download10MB"/>
+                <Button x:Name="Download50MBButton" Content="Download 50MB" Click="Download50MB"/>
+                <Button x:Name="Download100MBButton" Content="Download 100MB" Click="Download100MB"/>
+            </StackPanel>
+            <TextBlock TextWrapping="Wrap" Text="Status" HorizontalAlignment="Center"/>
+            <StackPanel x:Name="debugPanel">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                    <TextBlock TextWrapping="Wrap" Text="Server ip" VerticalAlignment="Center"/>
+                    <TextBox Height="23" TextWrapping="Wrap" MinWidth="150" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
+                    <TextBlock TextWrapping="Wrap" Text="Server port" VerticalAlignment="Center"/>
+                    <TextBox Height="23" TextWrapping="Wrap" MinWidth="100" />
+                </StackPanel>
+                <Button Content="Clear logs" Click="ClearLogs_Click"/>
+            </StackPanel>
         </StackPanel>
 
-		<ListBox x:Name="LogListBox" Margin="10,167,10,10" />
+        <ListBox x:Name="LogListBox" Margin="10,117,10,10" />
 
-	</Grid>
+    </Grid>
 </UserControl>
