@@ -4,32 +4,35 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d"
-	d:DesignHeight="300" d:DesignWidth="400">
+	d:DesignHeight="300" d:DesignWidth="500">
 
-    <Grid x:Name="LayoutRoot" Background="White">
-        <StackPanel  >
-            <StackPanel Orientation="Horizontal">
-                <Button x:Name="Download1MBButton" Content="Download 1MB" Click="Download1MB"/>
-                <Button x:Name="Download5MBButton" Content="Download 5MB" Click="Download5MB"/>
-                <Button x:Name="Download10MBButton" Content="Download 10MB" Click="Download10MB"/>
-                <Button x:Name="Download50MBButton" Content="Download 50MB" Click="Download50MB"/>
-                <Button x:Name="Download100MBButton" Content="Download 100MB" Click="Download100MB"/>
+	<Grid x:Name="LayoutRoot" Background="White">
+		<StackPanel  >
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+				<Button x:Name="Download1MBButton" Content="Download 1MB" Click="Download1MB"/>
+				<Button x:Name="Download5MBButton" Content="Download 5MB" Click="Download5MB"/>
+				<Button x:Name="Download10MBButton" Content="Download 10MB" Click="Download10MB"/>
+				<Button x:Name="Download50MBButton" Content="Download 50MB" Click="Download50MB"/>
+				<Button x:Name="Download100MBButton" Content="Download 100MB" Click="Download100MB"/>
+			</StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button x:Name="Upload1MBButton" Content="Upload 1MB" Click="Upload1MB"/>
+                <Button x:Name="Upload5MBButton" Content="Upload 5MB" Click="Upload5MB"/>
+                <Button x:Name="Upload10MBButton" Content="Upload 10MB" Click="Upload10MB"/>
+                <Button x:Name="Upload50MBButton" Content="Upload 50MB" Click="Upload50MB"/>
+                <Button x:Name="Upload100MBButton" Content="Upload 100MB" Click="Upload100MB"/>
             </StackPanel>
             <TextBlock TextWrapping="Wrap" Text="Status" HorizontalAlignment="Center"/>
-            <StackPanel x:Name="debugPanel">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
-                    <TextBlock TextWrapping="Wrap" Text="Server ip" VerticalAlignment="Center"/>
-                    <TextBox Height="23" TextWrapping="Wrap" MinWidth="150" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
-                    <TextBlock TextWrapping="Wrap" Text="Server port" VerticalAlignment="Center"/>
-                    <TextBox Height="23" TextWrapping="Wrap" MinWidth="100" />
-                </StackPanel>
-                <Button Content="Clear logs" Click="ClearLogs_Click"/>
-            </StackPanel>
-        </StackPanel>
+			<StackPanel x:Name="debugPanel">
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
+					<TextBlock TextWrapping="Wrap" Text="Server ip" VerticalAlignment="Center"/>
+					<TextBox x:Name="serverIP" Height="23" TextWrapping="Wrap" MinWidth="150" Text="127.0.0.1" />
+				</StackPanel>
+				<Button Content="Clear logs" Click="ClearLogs_Click"/>
+			</StackPanel>
+		</StackPanel>
 
-        <ListBox x:Name="LogListBox" Margin="10,117,10,10" />
+		<ListBox x:Name="LogListBox" Margin="10,117,10,10" />
 
-    </Grid>
+	</Grid>
 </UserControl>

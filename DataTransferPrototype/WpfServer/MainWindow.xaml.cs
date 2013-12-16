@@ -56,10 +56,10 @@ namespace WpfServer
 		}
 
 		private TcpPolicyServer myPolicyServer = new TcpPolicyServer();
-		private IDuplexStringMessageReceiver CommandReceiver;
-		private IDuplexInputChannel Worker4504InputChannel;
+		private IDuplexStringMessageReceiver Command_MessageReceiver;
+		private IDuplexInputChannel Worker4504_InputChannel;
 
-		public void StartServer()
+		public void Command_Initialize()
 		{
 			// Start the policy server to be able to communicate with silverlight.
 			myPolicyServer.StartPolicyServer();
@@ -67,10 +67,10 @@ namespace WpfServer
 			// Create duplex message receiver.
 			// It can receive messages and also send back response messages.
 			IDuplexStringMessagesFactory aStringMessagesFactory = new DuplexStringMessagesFactory();
-			CommandReceiver = aStringMessagesFactory.CreateDuplexStringMessageReceiver();
-			CommandReceiver.ResponseReceiverConnected += ClientConnected;
-			CommandReceiver.ResponseReceiverDisconnected += ClientDisconnected;
-			CommandReceiver.RequestReceived += MessageReceived;
+			Command_MessageReceiver = aStringMessagesFactory.CreateDuplexStringMessageReceiver();
+			Command_MessageReceiver.ResponseReceiverConnected += ClientConnected;
+			Command_MessageReceiver.ResponseReceiverDisconnected += ClientDisconnected;
+			Command_MessageReceiver.RequestReceived += Command_Received;
 
 			// Create TCP based messaging.
 			IMessagingSystemFactory aMessaging = new TcpMessagingSystemFactory();
@@ -78,63 +78,25 @@ namespace WpfServer
 
 			// Attach the duplex input channel to the message receiver and start listening.
 			// Note: Duplex input channel can receive messages but also send messages back.
-			CommandReceiver.AttachDuplexInputChannel(aDuplexInputChannel);
+			Command_MessageReceiver.AttachDuplexInputChannel(aDuplexInputChannel);
 			Logger.Info("Server started");
 
-			StartWorker4504Server();
+			Worker4504_Initialize();
 		}
-
-		public void StartWorker4504Server()
-		{
-			// Create TCP based messaging.
-			IMessagingSystemFactory aMessaging = new TcpMessagingSystemFactory();
-			Worker4504InputChannel = aMessaging.CreateDuplexInputChannel("tcp://127.0.0.1:4504");
-			Worker4504InputChannel.MessageReceived += Worker4504InputChannel_MessageReceived;
-			Worker4504InputChannel.ResponseReceiverConnected += ClientConnected;
-			Worker4504InputChannel.ResponseReceiverDisconnected += ClientDisconnected;
-			//Worker4504InputChannel.ResponseReceiverConnected += Worker4504InputChannel_ResponseReceiverConnected;
-			//Worker4504InputChannel.ResponseReceiverDisconnected += Worker4504InputChannel_ResponseReceiverDisconnected;
-			Worker4504InputChannel.StartListening();
-
-			Logger.Info("Worker server 4504 started");
-		}
-
-		void Worker4504InputChannel_MessageReceived(object sender, DuplexChannelMessageEventArgs e)
-		{
-			// echo back
-			//Logger.Info(BitConverter.ToString(e.Message as byte[]));
-			//string s = BitConverter.ToString(e.Message as byte[]);
-			//Logger.Info("Received : " + s);
-			Logger.Info("Received data length : " + (e.Message as byte[]).Length);
-			//Logger.Info(e.Message.ToString());
-			Worker4504InputChannel.SendResponseMessage(e.ResponseReceiverId, e.Message);
-		}
-
-		public void StopServer()
-		{
-			// Close listenig.
-			// Note: If the listening is not closed, then listening threads are not ended
-			//       and the application would not be closed properly.
-			CommandReceiver.DetachDuplexInputChannel();
-			Worker4504InputChannel.StopListening();
-
-			myPolicyServer.StopPolicyServer();
-		}
-
-		// The method is called when a message from the client is received.
-		private async void MessageReceived(object sender, StringRequestReceivedEventArgs e)
+		
+		private void Command_Received(object sender, StringRequestReceivedEventArgs e)
 		{
 			Logger.Info("Received : " + e.RequestMessage + " from " + e.ResponseReceiverId);
 			try
 			{
-				CommandReceiver.SendResponseMessage(e.ResponseReceiverId, e.RequestMessage);
+				Command_MessageReceiver.SendResponseMessage(e.ResponseReceiverId, e.RequestMessage);
 			}
 			catch (Exception)
 			{
 			}
 
 			// Analyze message
-				// split strings
+			// split strings
 			string[] received = e.RequestMessage.Split('|');
 			//Logger.Info("Split");
 			foreach (string s in received)
@@ -177,27 +139,27 @@ namespace WpfServer
 					//byte[] data = new byte[10]; // initialize 1MB data
 					Random random = new Random();
 					random.NextBytes(data);
-					
+
 					int i = 0;
 					string s = "a";
 					Logger.Info("Start sending " + length + " bytes of data " + repeat + " times to " + target);
 					Stopwatch stopwatch = new Stopwatch();
 					stopwatch.Start();
-					CommandReceiver.SendResponseMessage(e.ResponseReceiverId, s);
+					Command_MessageReceiver.SendResponseMessage(e.ResponseReceiverId, s);
 					do
 					{
-						Worker4504InputChannel.SendResponseMessage(target, data);
+						Worker4504_InputChannel.SendResponseMessage(target, data);
 
 						i++;
-					} while (i<repeat);
+					} while (i < repeat);
 					s = "z";
-					CommandReceiver.SendResponseMessage(e.ResponseReceiverId, s);
+					Command_MessageReceiver.SendResponseMessage(e.ResponseReceiverId, s);
 					stopwatch.Stop();
 					Logger.Info("Finished sending " + length + " bytes of data " + repeat + " times to " + target + " in " + stopwatch.ElapsedMilliseconds + " milliseconds");
 				}
 				else if (command.Equals("receive"))
 				{
-					
+
 				}
 				else if (command.Equals("notify"))
 				{
@@ -205,7 +167,7 @@ namespace WpfServer
 				}
 				else
 				{
-					Logger.Error("Unknown command : " + command);                    
+					Logger.Error("Unknown command : " + command);
 				}
 			}
 			else
@@ -218,9 +180,55 @@ namespace WpfServer
 			// Send message
 		}
 
+		public void Worker4504_Initialize()
+		{
+			// Create TCP based messaging.
+			IMessagingSystemFactory aMessaging = new TcpMessagingSystemFactory();
+			Worker4504_InputChannel = aMessaging.CreateDuplexInputChannel("tcp://127.0.0.1:4504");
+			Worker4504_InputChannel.MessageReceived += Worker4504_Received;
+			Worker4504_InputChannel.ResponseReceiverConnected += ClientConnected;
+			Worker4504_InputChannel.ResponseReceiverDisconnected += ClientDisconnected;
+			//Worker4504InputChannel.ResponseReceiverConnected += Worker4504InputChannel_ResponseReceiverConnected;
+			//Worker4504InputChannel.ResponseReceiverDisconnected += Worker4504InputChannel_ResponseReceiverDisconnected;
+			Worker4504_InputChannel.StartListening();
+
+			Logger.Info("Worker server 4504 started");
+		}
+
+		void Worker4504_Received(object sender, DuplexChannelMessageEventArgs e)
+		{
+			// echo back
+			//Logger.Info(BitConverter.ToString(e.Message as byte[]));
+			//string s = BitConverter.ToString(e.Message as byte[]);
+			//Logger.Info("Received : " + s);
+			//Logger.Info(e.Message.ToString());
+			//Worker4504InputChannel.SendResponseMessage(e.ResponseReceiverId, e.Message);
+
+			int length = (e.Message as byte[]).Length;
+			Logger.Info("Worker received length : " + length);
+
+			if (length == 0)
+			{
+				// notify client to that we received the last byte
+				var b = new byte[0];
+				Worker4504_InputChannel.SendResponseMessage(e.ResponseReceiverId, b);
+			}
+		}
+		
 		private void Window_Closed(object sender, EventArgs e)
 		{
 			StopServer();
+		}
+	
+		public void StopServer()
+		{
+			// Close listenig.
+			// Note: If the listening is not closed, then listening threads are not ended
+			//       and the application would not be closed properly.
+			Command_MessageReceiver.DetachDuplexInputChannel();
+			Worker4504_InputChannel.StopListening();
+
+			myPolicyServer.StopPolicyServer();
 		}
 
 		// The method is called when a client is connected.
@@ -256,7 +264,7 @@ namespace WpfServer
 			// Send the message to all connected clients.
 			foreach (string aClientId in ConnectedClientsListBox.Items)
 			{
-				CommandReceiver.SendResponseMessage(aClientId, s);
+				Command_MessageReceiver.SendResponseMessage(aClientId, s);
 			}
 		}
 
@@ -277,13 +285,13 @@ namespace WpfServer
 
 		private void Server_Click(object sender, RoutedEventArgs e)
 		{
-			if (CommandReceiver == null)
+			if (Command_MessageReceiver == null)
 			{
-				StartServer();
+				Command_Initialize();
 				var s = sender as Button;
 				s.Content = "Stop Server";
 			}
-			else if (CommandReceiver.IsDuplexInputChannelAttached)
+			else if (Command_MessageReceiver.IsDuplexInputChannelAttached)
 			{
 				StopServer();
 				var s = sender as Button;
@@ -291,7 +299,7 @@ namespace WpfServer
 			}
 			else
 			{
-				StartServer();
+				Command_Initialize();
 				var s = sender as Button;
 				s.Content = "Stop Server";
 			}
