@@ -36,7 +36,7 @@ namespace SilverlightClient
 			InitializeComponent();
 		}
 
-#region Common Utilities
+		#region Common Utilities
 		static byte[] GetBytes(string str)
 		{
 			byte[] bytes = new byte[str.Length * sizeof(char)];
@@ -144,7 +144,7 @@ namespace SilverlightClient
 		}
 
 
-#endregion
+		#endregion
 
 		private void Download1MB(object sender, RoutedEventArgs e)
 		{
@@ -171,7 +171,7 @@ namespace SilverlightClient
 		{
 			// fragmented
 			_repeat = 1;
-			_bytesLength = 1048576*5;
+			_bytesLength = 1048576 * 5;
 
 			// non fragmented
 			//repeat = 730*5;
@@ -192,7 +192,7 @@ namespace SilverlightClient
 		{
 			// fragmented
 			_repeat = 1;
-			_bytesLength = 1048576*10;
+			_bytesLength = 1048576 * 10;
 
 			// non fragmented
 			//repeat = 730*10;
@@ -213,7 +213,7 @@ namespace SilverlightClient
 		{
 			// fragmented
 			_repeat = 1;
-			_bytesLength = 1048576*50;
+			_bytesLength = 1048576 * 50;
 
 			// non fragmented
 			//repeat = 730*50;
@@ -234,7 +234,7 @@ namespace SilverlightClient
 		{
 			// fragmented
 			_repeat = 1;
-			_bytesLength = 1048576*100;
+			_bytesLength = 1048576 * 100;
 
 			// non fragmented
 			//repeat = 730*100;
@@ -333,7 +333,7 @@ namespace SilverlightClient
 
 			if (Worker4504_OutputChannel.IsConnected)
 			{
-				return true;		        
+				return true;
 			}
 			else
 			{
@@ -416,42 +416,34 @@ namespace SilverlightClient
 			Worker4504_OutputChannel.CloseConnection();
 		}
 
-		void Upload(object sender, RoutedEventArgs e, int repeat, int bytesLength)
+		void Upload(int repeat, int bytesLength)
 		{
-			DisableAllButton();
+			// create data to send
+			var data = new byte[bytesLength];
+			var random = new Random();
+			random.NextBytes(data);
 
-			if (Command_Initialize())
+			int i = 0;
+			Log("Start sending " + bytesLength + " bytes of data " + repeat + " times to " + Worker4504_OutputChannel.ResponseReceiverId);
+			_stopwatch = new Stopwatch();
+			_stopwatch.Start();
+			// notify server
+			Command_MessageSender.SendMessage("1|receive|" + Worker4504_OutputChannel.ResponseReceiverId + "|" + bytesLength + "|" + repeat);
+			do
 			{
-				if (Worker4504_Initialize())
-				{
-					// create data to send
-					var data = new byte[bytesLength];
-					var random = new Random();
-					random.NextBytes(data);
+				Worker4504_OutputChannel.SendMessage(data);
 
-					int i = 0;
-					Log("Start sending " + bytesLength + " bytes of data " + repeat + " times to " + Worker4504_OutputChannel.ResponseReceiverId);
-					_stopwatch = new Stopwatch();
-					_stopwatch.Start();
-					// notify server
-					Command_MessageSender.SendMessage("1|receive|" + Worker4504_OutputChannel.ResponseReceiverId + "|" + bytesLength + "|" + repeat);
-					do
-					{
-						Worker4504_OutputChannel.SendMessage(data);
+				i++;
+			} while (i < repeat);
+			// notify server that sending complete
+			var b = new byte[0];
+			Worker4504_OutputChannel.SendMessage(b);
 
-						i++;
-					} while (i < repeat);
-					// notify server that sending complete
-					var b = new byte[0];
-					Worker4504_OutputChannel.SendMessage(b);
+			//s = "z";
+			//Command_MessageReceiver.SendResponseMessage(e.ResponseReceiverId, s);
+			//stopwatch.Stop();
 
-					//s = "z";
-					//Command_MessageReceiver.SendResponseMessage(e.ResponseReceiverId, s);
-					//stopwatch.Stop();
-					
-					Log("Finished sending " + bytesLength + " bytes of data " + repeat + " times to " + Worker4504_OutputChannel.ResponseReceiverId + " in " + _stopwatch.ElapsedMilliseconds + " milliseconds");
-				}
-			}
+			Log("Finished sending " + bytesLength + " bytes of data " + repeat + " times to " + Worker4504_OutputChannel.ResponseReceiverId + " in " + _stopwatch.ElapsedMilliseconds + " milliseconds");
 		}
 
 		private void Upload1MB(object sender, RoutedEventArgs e)
@@ -460,14 +452,21 @@ namespace SilverlightClient
 
 			// fragmented
 			_repeat = 1;
-			_bytesLength = 1048576*multiplier;
+			_bytesLength = 1048576 * multiplier;
 
 			// non fragmented
-			//repeat = 730*multiplier;
-			//bytesLength = 1440;
+			//_repeat = 730*multiplier;
+			//_bytesLength = 1440;
 
-			Upload(sender, e, _repeat, _bytesLength);
-			//var task1 = Task.Factory.StartNew(() => Upload(sender, e, _repeat, _bytesLength));
+			DisableAllButton();
+
+			if (Command_Initialize())
+			{
+				if (Worker4504_Initialize())
+				{
+					Task.Factory.StartNew(() => Upload(_repeat, _bytesLength));
+				}
+			}
 		}
 
 		private void Upload5MB(object sender, RoutedEventArgs e)
@@ -479,10 +478,18 @@ namespace SilverlightClient
 			_bytesLength = 1048576 * multiplier;
 
 			// non fragmented
-			//repeat = 730*multiplier;
-			//bytesLength = 1440;
+			//_repeat = 730*multiplier;
+			//_bytesLength = 1440;
 
-			Upload(sender, e, _repeat, _bytesLength);
+			DisableAllButton();
+
+			if (Command_Initialize())
+			{
+				if (Worker4504_Initialize())
+				{
+					Task.Factory.StartNew(() => Upload(_repeat, _bytesLength));
+				}
+			}
 		}
 
 		private void Upload10MB(object sender, RoutedEventArgs e)
@@ -494,10 +501,18 @@ namespace SilverlightClient
 			_bytesLength = 1048576 * multiplier;
 
 			// non fragmented
-			//repeat = 730*multiplier;
-			//bytesLength = 1440;
+			//_repeat = 730*multiplier;
+			//_bytesLength = 1440;
 
-			Upload(sender, e, _repeat, _bytesLength);
+			DisableAllButton();
+
+			if (Command_Initialize())
+			{
+				if (Worker4504_Initialize())
+				{
+					Task.Factory.StartNew(() => Upload(_repeat, _bytesLength));
+				}
+			}
 		}
 
 		private void Upload50MB(object sender, RoutedEventArgs e)
@@ -509,10 +524,18 @@ namespace SilverlightClient
 			_bytesLength = 1048576 * multiplier;
 
 			// non fragmented
-			//repeat = 730*multiplier;
-			//bytesLength = 1440;
+			//_repeat = 730*multiplier;
+			//_bytesLength = 1440;
 
-			Upload(sender, e, _repeat, _bytesLength);
+			DisableAllButton();
+
+			if (Command_Initialize())
+			{
+				if (Worker4504_Initialize())
+				{
+					Task.Factory.StartNew(() => Upload(_repeat, _bytesLength));
+				}
+			}
 		}
 
 		private void Upload100MB(object sender, RoutedEventArgs e)
@@ -524,10 +547,18 @@ namespace SilverlightClient
 			_bytesLength = 1048576 * multiplier;
 
 			// non fragmented
-			//repeat = 730*multiplier;
-			//bytesLength = 1440;
+			//_repeat = 730*multiplier;
+			//_bytesLength = 1440;
 
-			Upload(sender, e, _repeat, _bytesLength);
+			DisableAllButton();
+
+			if (Command_Initialize())
+			{
+				if (Worker4504_Initialize())
+				{
+					Task.Factory.StartNew(() => Upload(_repeat, _bytesLength));
+				}
+			}
 		}
 	}
 }

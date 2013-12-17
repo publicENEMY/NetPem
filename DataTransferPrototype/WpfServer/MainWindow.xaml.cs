@@ -74,7 +74,7 @@ namespace WpfServer
 
 			// Create TCP based messaging.
 			IMessagingSystemFactory aMessaging = new TcpMessagingSystemFactory();
-			IDuplexInputChannel aDuplexInputChannel = aMessaging.CreateDuplexInputChannel("tcp://127.0.0.1:4502");
+			IDuplexInputChannel aDuplexInputChannel = aMessaging.CreateDuplexInputChannel("tcp://0.0.0.0:4502");
 
 			// Attach the duplex input channel to the message receiver and start listening.
 			// Note: Duplex input channel can receive messages but also send messages back.
@@ -184,7 +184,7 @@ namespace WpfServer
 		{
 			// Create TCP based messaging.
 			IMessagingSystemFactory aMessaging = new TcpMessagingSystemFactory();
-			Worker4504_InputChannel = aMessaging.CreateDuplexInputChannel("tcp://127.0.0.1:4504");
+			Worker4504_InputChannel = aMessaging.CreateDuplexInputChannel("tcp://0.0.0.0:4504");
 			Worker4504_InputChannel.MessageReceived += Worker4504_Received;
 			Worker4504_InputChannel.ResponseReceiverConnected += ClientConnected;
 			Worker4504_InputChannel.ResponseReceiverDisconnected += ClientDisconnected;

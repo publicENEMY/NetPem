@@ -26,7 +26,7 @@
 			<StackPanel x:Name="debugPanel">
 				<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
 					<TextBlock TextWrapping="Wrap" Text="Server ip" VerticalAlignment="Center"/>
-					<TextBox x:Name="serverIP" Height="23" TextWrapping="Wrap" MinWidth="150" Text="127.0.0.1" />
+					<TextBox x:Name="serverIP" Height="23" TextWrapping="Wrap" MinWidth="150" Text="219.93.8.10" />
 				</StackPanel>
 				<Button Content="Clear logs" Click="ClearLogs_Click"/>
 			</StackPanel>
