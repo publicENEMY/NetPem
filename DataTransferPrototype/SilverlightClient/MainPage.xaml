@@ -15,14 +15,15 @@
 				<Button x:Name="Download50MBButton" Content="Download 50MB" Click="Download50MB"/>
 				<Button x:Name="Download100MBButton" Content="Download 100MB" Click="Download100MB"/>
 			</StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button x:Name="Upload1MBButton" Content="Upload 1MB" Click="Upload1MB"/>
-                <Button x:Name="Upload5MBButton" Content="Upload 5MB" Click="Upload5MB"/>
-                <Button x:Name="Upload10MBButton" Content="Upload 10MB" Click="Upload10MB"/>
-                <Button x:Name="Upload50MBButton" Content="Upload 50MB" Click="Upload50MB"/>
-                <Button x:Name="Upload100MBButton" Content="Upload 100MB" Click="Upload100MB"/>
-            </StackPanel>
-            <TextBlock TextWrapping="Wrap" Text="Status" HorizontalAlignment="Center"/>
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+				<Button x:Name="Upload1MBButton" Content="Upload 1MB" Click="Upload1MB"/>
+				<Button x:Name="Upload5MBButton" Content="Upload 5MB" Click="Upload5MB"/>
+				<Button x:Name="Upload10MBButton" Content="Upload 10MB" Click="Upload10MB"/>
+				<Button x:Name="Upload50MBButton" Content="Upload 50MB" Click="Upload50MB"/>
+				<Button x:Name="Upload100MBButton" Content="Upload 100MB" Click="Upload100MB"/>
+			</StackPanel>
+            <ProgressBar x:Name="TransferProgressBar" IsIndeterminate="True" Height="8" Opacity="0" />
+			<TextBlock x:Name="StatusBar" TextWrapping="Wrap" Text="Status" HorizontalAlignment="Center"/>
 			<StackPanel x:Name="debugPanel">
 				<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
 					<TextBlock TextWrapping="Wrap" Text="Server ip" VerticalAlignment="Center"/>
@@ -30,7 +31,7 @@
 				</StackPanel>
 				<Button Content="Clear logs" Click="ClearLogs_Click"/>
 			</StackPanel>
-		</StackPanel>
+        </StackPanel>
 
 		<ListBox x:Name="LogListBox" Margin="10,117,10,10" />
 

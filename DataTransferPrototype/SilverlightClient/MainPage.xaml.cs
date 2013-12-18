@@ -146,17 +146,35 @@ namespace SilverlightClient
 
 		#endregion
 
+		private void MiscUIStart(string status)
+		{
+			// update status bar
+			StatusBar.Text = status;
+			TransferProgressBar.Opacity = 1;
+		}
+
+		private void MiscUIStop(string status)
+		{
+			// update status bar
+			StatusBar.Text = status;
+			TransferProgressBar.Opacity = 0;
+		}
+		
 		private void Download1MB(object sender, RoutedEventArgs e)
 		{
+			int multiplier = 1;
+
 			// fragmented
 			_repeat = 1;
-			_bytesLength = 1048576;
+			_bytesLength = 1048576 * multiplier;
 
 			// non fragmented
-			//repeat = 730;
+			//repeat = 730*multiplier;
 			//bytesLength = 1440;
 
+			//UI related
 			DisableAllButton();
+			MiscUIStart("Downloading " + multiplier + " megabytes of data.");
 
 			if (Command_Initialize())
 			{
@@ -169,15 +187,19 @@ namespace SilverlightClient
 
 		private void Download5MB(object sender, RoutedEventArgs e)
 		{
+			int multiplier = 5;
+
 			// fragmented
 			_repeat = 1;
-			_bytesLength = 1048576 * 5;
+			_bytesLength = 1048576 * multiplier;
 
 			// non fragmented
-			//repeat = 730*5;
+			//repeat = 730*multiplier;
 			//bytesLength = 1440;
 
+			//UI related
 			DisableAllButton();
+			MiscUIStart("Downloading " + multiplier +" megabytes of data.");
 
 			if (Command_Initialize())
 			{
@@ -190,15 +212,20 @@ namespace SilverlightClient
 
 		private void Download10MB(object sender, RoutedEventArgs e)
 		{
+			int multiplier = 10;
+
 			// fragmented
 			_repeat = 1;
-			_bytesLength = 1048576 * 10;
+			_bytesLength = 1048576 * multiplier;
 
 			// non fragmented
-			//repeat = 730*10;
+			//repeat = 730*multiplier;
 			//bytesLength = 1440;
 
+			//UI related
 			DisableAllButton();
+			MiscUIStart("Downloading " + multiplier + " megabytes of data.");
+
 
 			if (Command_Initialize())
 			{
@@ -211,15 +238,20 @@ namespace SilverlightClient
 
 		private void Download50MB(object sender, RoutedEventArgs e)
 		{
+			int multiplier = 50;
+
 			// fragmented
 			_repeat = 1;
-			_bytesLength = 1048576 * 50;
+			_bytesLength = 1048576 * multiplier;
 
 			// non fragmented
-			//repeat = 730*50;
+			//repeat = 730*multiplier;
 			//bytesLength = 1440;
 
+			//UI related
 			DisableAllButton();
+			MiscUIStart("Downloading " + multiplier + " megabytes of data.");
+
 
 			if (Command_Initialize())
 			{
@@ -232,15 +264,20 @@ namespace SilverlightClient
 
 		private void Download100MB(object sender, RoutedEventArgs e)
 		{
+			int multiplier = 100;
+
 			// fragmented
 			_repeat = 1;
-			_bytesLength = 1048576 * 100;
+			_bytesLength = 1048576 * multiplier;
 
 			// non fragmented
-			//repeat = 730*100;
+			//repeat = 730*multiplier;
 			//bytesLength = 1440;
 
+			//UI related
 			DisableAllButton();
+			MiscUIStart("Downloading " + multiplier + " megabytes of data.");
+
 
 			if (Command_Initialize())
 			{
@@ -369,11 +406,9 @@ namespace SilverlightClient
 					Log("Bandwidth : " + Mbps + " Mb/s");
 					Log("");
 
+					MiscUIStop((double)sizeTransfered / 1048576 + " megabytes of data downloaded in " + (double)_stopwatch.ElapsedMilliseconds / 1000 + " seconds");
 					_packetCounter = 0;
 				}
-
-				// notify client to that we received the last byte
-				//Worker4504_InputChannel.SendResponseMessage(e.ResponseReceiverId, "z");
 			}
 			// upload
 			else if (length == 0)
@@ -393,6 +428,8 @@ namespace SilverlightClient
 				Log("Bandwidth : " + MBps + " MB/s");
 				Log("Bandwidth : " + Mbps + " Mb/s");
 				Log("");
+
+				MiscUIStop((double)sizeTransfered / 1048576 + " megabytes of data uploaded in " + (double)_stopwatch.ElapsedMilliseconds / 1000 + " seconds");
 			}
 
 		}
@@ -439,10 +476,6 @@ namespace SilverlightClient
 			var b = new byte[0];
 			Worker4504_OutputChannel.SendMessage(b);
 
-			//s = "z";
-			//Command_MessageReceiver.SendResponseMessage(e.ResponseReceiverId, s);
-			//stopwatch.Stop();
-
 			Log("Finished sending " + bytesLength + " bytes of data " + repeat + " times to " + Worker4504_OutputChannel.ResponseReceiverId + " in " + _stopwatch.ElapsedMilliseconds + " milliseconds");
 		}
 
@@ -455,10 +488,13 @@ namespace SilverlightClient
 			_bytesLength = 1048576 * multiplier;
 
 			// non fragmented
-			//_repeat = 730*multiplier;
-			//_bytesLength = 1440;
+			//repeat = 730*multiplier;
+			//bytesLength = 1440;
 
+			//UI related
 			DisableAllButton();
+			MiscUIStart("Uploading " + multiplier + " megabytes of data.");
+
 
 			if (Command_Initialize())
 			{
@@ -478,10 +514,12 @@ namespace SilverlightClient
 			_bytesLength = 1048576 * multiplier;
 
 			// non fragmented
-			//_repeat = 730*multiplier;
-			//_bytesLength = 1440;
+			//repeat = 730*multiplier;
+			//bytesLength = 1440;
 
+			//UI related
 			DisableAllButton();
+			MiscUIStart("Uploading " + multiplier + " megabytes of data.");
 
 			if (Command_Initialize())
 			{
@@ -501,10 +539,12 @@ namespace SilverlightClient
 			_bytesLength = 1048576 * multiplier;
 
 			// non fragmented
-			//_repeat = 730*multiplier;
-			//_bytesLength = 1440;
+			//repeat = 730*multiplier;
+			//bytesLength = 1440;
 
+			//UI related
 			DisableAllButton();
+			MiscUIStart("Uploading " + multiplier + " megabytes of data.");
 
 			if (Command_Initialize())
 			{
@@ -524,10 +564,12 @@ namespace SilverlightClient
 			_bytesLength = 1048576 * multiplier;
 
 			// non fragmented
-			//_repeat = 730*multiplier;
-			//_bytesLength = 1440;
+			//repeat = 730*multiplier;
+			//bytesLength = 1440;
 
+			//UI related
 			DisableAllButton();
+			MiscUIStart("Uploading " + multiplier + " megabytes of data.");
 
 			if (Command_Initialize())
 			{
@@ -547,10 +589,12 @@ namespace SilverlightClient
 			_bytesLength = 1048576 * multiplier;
 
 			// non fragmented
-			//_repeat = 730*multiplier;
-			//_bytesLength = 1440;
+			//repeat = 730*multiplier;
+			//bytesLength = 1440;
 
+			//UI related
 			DisableAllButton();
+			MiscUIStart("Uploading " + multiplier + " megabytes of data.");
 
 			if (Command_Initialize())
 			{
