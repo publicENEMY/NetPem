@@ -4,7 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
     xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit"
-    mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"
+    mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="1000"
     Title="Home"
     Style="{StaticResource PageStyle}">
 
@@ -532,12 +532,12 @@
                             <Grid>
                                 <Button Content="" Height="480" Style="{StaticResource ButtonStyle}" Width="320" Click="StartStreaming" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="4" Background="{x:Null}"/>
                             </Grid>
-                            <TextBlock TextWrapping="Wrap" Text="Version 1.0.133" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                            <TextBlock TextWrapping="Wrap" Text="Version 1.0" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
                         </StackPanel>
                     </Border>
                     <Grid Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <StackPanel Orientation="Vertical">
-                            <Border x:Name="Card" CornerRadius="2" BorderThickness="1" Margin="4" Width="400">
+                            <!--<Border x:Name="Card" CornerRadius="2" BorderThickness="1" Margin="4" Width="400">
                                 <Border.BorderBrush>
                                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                         <GradientStop Color="#FFA4A4A4" Offset="0"/>
@@ -576,11 +576,11 @@
                                         </RichTextBox>
                                     </Grid>
                                 </StackPanel>
-                            </Border>
+                            </Border>-->
                             <Grid Height="42"/>
                             <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <toolkit:Accordion HorizontalAlignment="Center" Width="400" SelectionSequence="CollapseBeforeExpand" SelectionMode="ZeroOrMore">
-                                    <toolkit:AccordionItem Header="What is streaming experience?" Style="{StaticResource AccordionItemStyle}">
+                                    <!--<toolkit:AccordionItem Header="What is streaming experience?" Style="{StaticResource AccordionItemStyle}">
                                         <RichTextBox VerticalScrollBarVisibility="Auto" Height="112" Padding="8" IsReadOnly="True" BorderThickness="0" Background="{x:Null}" >
                                             <Paragraph>
                                                 <Run Text="Streaming experience is defined as the impression a person feel after undergo a video streaming event. While we dont technically measure a person emotional feelings, we do measure the technicalities that contributes to the streaming experience. Streaming experience is rated as either GOOD or POOR."/>
@@ -671,7 +671,59 @@
                                                 <Run Text="Khalil Huzairi bin Ahmad"/>
                                             </Paragraph>
                                         </RichTextBox>
+                                    </toolkit:AccordionItem>-->
+
+                                    <toolkit:AccordionItem Header="Lorem ipsum dolor sit amet" Style="{StaticResource AccordionItemStyle}">
+                                        <RichTextBox VerticalScrollBarVisibility="Auto" Height="112" Padding="8" IsReadOnly="True" BorderThickness="0" Background="{x:Null}" >
+                                            <Paragraph>
+                                                <Run Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur adipiscing vestibulum rhoncus. Phasellus consequat scelerisque nulla. Cras vestibulum imperdiet venenatis. Suspendisse vitae purus sollicitudin, tristique odio eget, egestas velit. Ut tempus semper eros sit amet rutrum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum malesuada ante feugiat, lobortis nisi vel, aliquam felis. Suspendisse adipiscing eros id leo rhoncus, sit amet ultricies mi molestie. Morbi sodales pretium leo vitae vestibulum."/>
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="Curabitur non porta leo, vel porta erat. Nullam pellentesque vehicula libero, at rutrum justo ullamcorper ut. Fusce accumsan interdum feugiat. Duis venenatis bibendum nibh id lacinia. Sed dapibus nisi sem, at tempor sem fermentum hendrerit. Aliquam erat volutpat. Quisque et fermentum risus, ac sodales lorem. Suspendisse sit amet ligula sit amet orci aliquam aliquam vel nec orci. Maecenas ac ligula faucibus, vehicula tortor sit amet, scelerisque dui. Quisque vulputate ligula sit amet augue faucibus, quis pretium nisl egestas. Vestibulum tempus ac nisi non aliquam."/>
+                                            </Paragraph>
+                                        </RichTextBox>
                                     </toolkit:AccordionItem>
+                                    <toolkit:AccordionItem Header="Lorem ipsum dolor sit amet" Style="{StaticResource AccordionItemStyle}">
+                                        <RichTextBox VerticalScrollBarVisibility="Auto" Height="112" Padding="8" IsReadOnly="True" BorderThickness="0" Background="{x:Null}" >
+                                            <Paragraph>
+                                                <Run Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur adipiscing vestibulum rhoncus. Phasellus consequat scelerisque nulla. Cras vestibulum imperdiet venenatis. Suspendisse vitae purus sollicitudin, tristique odio eget, egestas velit. Ut tempus semper eros sit amet rutrum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum malesuada ante feugiat, lobortis nisi vel, aliquam felis. Suspendisse adipiscing eros id leo rhoncus, sit amet ultricies mi molestie. Morbi sodales pretium leo vitae vestibulum."/>
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="Curabitur non porta leo, vel porta erat. Nullam pellentesque vehicula libero, at rutrum justo ullamcorper ut. Fusce accumsan interdum feugiat. Duis venenatis bibendum nibh id lacinia. Sed dapibus nisi sem, at tempor sem fermentum hendrerit. Aliquam erat volutpat. Quisque et fermentum risus, ac sodales lorem. Suspendisse sit amet ligula sit amet orci aliquam aliquam vel nec orci. Maecenas ac ligula faucibus, vehicula tortor sit amet, scelerisque dui. Quisque vulputate ligula sit amet augue faucibus, quis pretium nisl egestas. Vestibulum tempus ac nisi non aliquam."/>
+                                            </Paragraph>
+                                        </RichTextBox>
+                                    </toolkit:AccordionItem>
+                                    <toolkit:AccordionItem Header="Lorem ipsum dolor sit amet" Style="{StaticResource AccordionItemStyle}">
+                                        <RichTextBox VerticalScrollBarVisibility="Auto" Height="112" Padding="8" IsReadOnly="True" BorderThickness="0" Background="{x:Null}" >
+                                            <Paragraph>
+                                                <Run Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur adipiscing vestibulum rhoncus. Phasellus consequat scelerisque nulla. Cras vestibulum imperdiet venenatis. Suspendisse vitae purus sollicitudin, tristique odio eget, egestas velit. Ut tempus semper eros sit amet rutrum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum malesuada ante feugiat, lobortis nisi vel, aliquam felis. Suspendisse adipiscing eros id leo rhoncus, sit amet ultricies mi molestie. Morbi sodales pretium leo vitae vestibulum."/>
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="Curabitur non porta leo, vel porta erat. Nullam pellentesque vehicula libero, at rutrum justo ullamcorper ut. Fusce accumsan interdum feugiat. Duis venenatis bibendum nibh id lacinia. Sed dapibus nisi sem, at tempor sem fermentum hendrerit. Aliquam erat volutpat. Quisque et fermentum risus, ac sodales lorem. Suspendisse sit amet ligula sit amet orci aliquam aliquam vel nec orci. Maecenas ac ligula faucibus, vehicula tortor sit amet, scelerisque dui. Quisque vulputate ligula sit amet augue faucibus, quis pretium nisl egestas. Vestibulum tempus ac nisi non aliquam."/>
+                                            </Paragraph>
+                                        </RichTextBox>
+                                    </toolkit:AccordionItem>
+                                    <toolkit:AccordionItem Header="Lorem ipsum dolor sit amet" Style="{StaticResource AccordionItemStyle}">
+                                        <RichTextBox VerticalScrollBarVisibility="Auto" Height="112" Padding="8" IsReadOnly="True" BorderThickness="0" Background="{x:Null}" >
+                                            <Paragraph>
+                                                <Run Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur adipiscing vestibulum rhoncus. Phasellus consequat scelerisque nulla. Cras vestibulum imperdiet venenatis. Suspendisse vitae purus sollicitudin, tristique odio eget, egestas velit. Ut tempus semper eros sit amet rutrum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum malesuada ante feugiat, lobortis nisi vel, aliquam felis. Suspendisse adipiscing eros id leo rhoncus, sit amet ultricies mi molestie. Morbi sodales pretium leo vitae vestibulum."/>
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="Curabitur non porta leo, vel porta erat. Nullam pellentesque vehicula libero, at rutrum justo ullamcorper ut. Fusce accumsan interdum feugiat. Duis venenatis bibendum nibh id lacinia. Sed dapibus nisi sem, at tempor sem fermentum hendrerit. Aliquam erat volutpat. Quisque et fermentum risus, ac sodales lorem. Suspendisse sit amet ligula sit amet orci aliquam aliquam vel nec orci. Maecenas ac ligula faucibus, vehicula tortor sit amet, scelerisque dui. Quisque vulputate ligula sit amet augue faucibus, quis pretium nisl egestas. Vestibulum tempus ac nisi non aliquam."/>
+                                            </Paragraph>
+                                        </RichTextBox>
+                                    </toolkit:AccordionItem>
+                                    <toolkit:AccordionItem Header="Lorem ipsum dolor sit amet" Style="{StaticResource AccordionItemStyle}">
+                                        <RichTextBox VerticalScrollBarVisibility="Auto" Height="112" Padding="8" IsReadOnly="True" BorderThickness="0" Background="{x:Null}" >
+                                            <Paragraph>
+                                                <Run Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur adipiscing vestibulum rhoncus. Phasellus consequat scelerisque nulla. Cras vestibulum imperdiet venenatis. Suspendisse vitae purus sollicitudin, tristique odio eget, egestas velit. Ut tempus semper eros sit amet rutrum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum malesuada ante feugiat, lobortis nisi vel, aliquam felis. Suspendisse adipiscing eros id leo rhoncus, sit amet ultricies mi molestie. Morbi sodales pretium leo vitae vestibulum."/>
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="Curabitur non porta leo, vel porta erat. Nullam pellentesque vehicula libero, at rutrum justo ullamcorper ut. Fusce accumsan interdum feugiat. Duis venenatis bibendum nibh id lacinia. Sed dapibus nisi sem, at tempor sem fermentum hendrerit. Aliquam erat volutpat. Quisque et fermentum risus, ac sodales lorem. Suspendisse sit amet ligula sit amet orci aliquam aliquam vel nec orci. Maecenas ac ligula faucibus, vehicula tortor sit amet, scelerisque dui. Quisque vulputate ligula sit amet augue faucibus, quis pretium nisl egestas. Vestibulum tempus ac nisi non aliquam."/>
+                                            </Paragraph>
+                                        </RichTextBox>
+                                    </toolkit:AccordionItem>
+
                                 </toolkit:Accordion>
                             </Grid>
                         </StackPanel>

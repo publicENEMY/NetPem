@@ -40,11 +40,22 @@ namespace StreamingClientNavigation.Views
 			InitializeMediaPlayer();
 		}
 
+		#region Configuration
 		// Executes when the user navigates to this page.
 		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
-
+			//Streaming1080p();
+			//Streaming720p();
+			//Streaming480p();
+			Streaming360p();
 		}
+
+		// constants
+		private const int FileSize1080P = 16504233;
+		private const int FileSize720P = 8508132;
+		private const int FileSize480P = 4376444;
+		private const int FileSize360P = 2243895;
+		#endregion
 
 		#region Log
 
@@ -150,13 +161,6 @@ namespace StreamingClientNavigation.Views
 		private double _duration = 0;
 
 		DispatcherTimer _stateUpdate = new DispatcherTimer();
-
-		// constants
-		private const int FileSize1080P = 16504233;
-		private const int FileSize720P  = 8508132;
-		private const int FileSize480P  = 4376444;
-		private const int FileSize360P  = 2243895;
-
 
 		private void InitializeMediaPlayer()
 		{

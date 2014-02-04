@@ -6,7 +6,7 @@
            mc:Ignorable="d"
            xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit" 
            xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
-           d:DesignWidth="640" d:DesignHeight="480"
+           d:DesignWidth="640" d:DesignHeight="1000"
            Title="Streaming Page">
     <Grid x:Name="LayoutRoot" >
         <ScrollViewer>
@@ -21,7 +21,7 @@
                             </Grid>
                             <StackPanel x:Name="PlayerPanel" Height="23" Visibility="Collapsed" />
                             <Grid x:Name="StatusGrid" Background="Black" Height="23" Visibility="Visible" >
-                                <TextBlock x:Name="StatusBar" TextWrapping="Wrap" Height="16" Foreground="White"/>
+                                <TextBlock x:Name="StatusBar" TextWrapping="Wrap" Height="16" Foreground="White" Text="Stand by" Margin="4,0,0,0"/>
                             </Grid>
                         </StackPanel>
                     </Border>
