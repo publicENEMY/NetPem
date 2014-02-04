@@ -27,7 +27,7 @@ namespace StreamingClientNavigation
 
 		private void StartStreaming(object sender, RoutedEventArgs e)
 		{
-
+			NavigationService.Navigate(new Uri(@"\Streaming", UriKind.Relative));
 		}
 	}
 }

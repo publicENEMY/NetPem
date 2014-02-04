@@ -43,6 +43,7 @@ namespace StreamingClientNavigation.Views
 		// Executes when the user navigates to this page.
 		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
+
 		}
 
 		#region Log
@@ -149,6 +150,13 @@ namespace StreamingClientNavigation.Views
 		private double _duration = 0;
 
 		DispatcherTimer _stateUpdate = new DispatcherTimer();
+
+		// constants
+		private const int FileSize1080P = 16504233;
+		private const int FileSize720P  = 8508132;
+		private const int FileSize480P  = 4376444;
+		private const int FileSize360P  = 2243895;
+
 
 		private void InitializeMediaPlayer()
 		{
@@ -467,6 +475,8 @@ namespace StreamingClientNavigation.Views
 
 		private void GetFileSize(string url)
 		{
+			// TODO: use fixed file size. server query took too long
+			// TODO: server query took too long because this download the whole file to query size
 			Log("Requesting file size");
 			StatusBar.Text = "Requesting file size";
 			try
@@ -492,6 +502,11 @@ namespace StreamingClientNavigation.Views
 			_mediaFileSize = response.ContentLength;
 			Log("Filesize aquired");
 
+			AssignMediaPlayerSource(response.ResponseUri.AbsoluteUri);
+		}
+
+		void AssignMediaPlayerSource(string url)
+		{
 			Dispatcher.BeginInvoke(new Action(() =>
 			{
 				var r = new Random();
@@ -504,52 +519,95 @@ namespace StreamingClientNavigation.Views
 				StatusBar.Text = "Filesize aquired";
 				Log("Assigning source to media player");
 				StatusBar.Text = "Initiating media player";
-				MediaPlayer.Source = new Uri(response.ResponseUri.AbsoluteUri + r.Next());
-			}));
+				MediaPlayer.Source = new Uri(url + r.Next());
+			}));			
 		}
 
-		private void StartStreaming1080p_Click(object sender, RoutedEventArgs e)
+		void SetFileSizeAndSource(string url, int fileSize)
+		{
+			_mediaFileSize = fileSize;
+
+			AssignMediaPlayerSource(url);			
+		}
+
+		void Streaming1080p()
 		{
 			Log("1080p media selected");
 			StatusBar.Text = "Streaming 1080p media";
 			StartStack.Children.Clear();
 			PlayerWindow.Visibility = Visibility.Visible;
 			ResetVariables();
-			GetFileSize(Media1080p);
-			StatusGrid.Visibility = Visibility.Visible;
+
+			// query file size from server
+			//GetFileSize(Media1080p);
+			SetFileSizeAndSource(Media1080p, FileSize1080P);
+
+			StatusGrid.Visibility = Visibility.Visible;			
 		}
 
-		private void StartStreaming720p_Click(object sender, RoutedEventArgs e)
+		void Streaming720p()
 		{
 			Log("720p media selected");
 			StatusBar.Text = "Streaming 720p media";
 			StartStack.Children.Clear();
 			PlayerWindow.Visibility = Visibility.Visible;
 			ResetVariables();
-			GetFileSize(Media720p);
+
+			// query file size from server
+			//GetFileSize(Media720p);
+			SetFileSizeAndSource(Media720p, FileSize720P);
+
 			StatusGrid.Visibility = Visibility.Visible;
 		}
 
-		private void StartStreaming480p_Click(object sender, RoutedEventArgs e)
+		void Streaming480p()
 		{
 			Log("480p media selected");
 			StatusBar.Text = "Streaming 480p media";
 			StartStack.Children.Clear();
 			PlayerWindow.Visibility = Visibility.Visible;
 			ResetVariables();
-			GetFileSize(Media480p);
+
+			// query file size from server
+			//GetFileSize(Media480p);
+			SetFileSizeAndSource(Media480p, FileSize480P);
+
 			StatusGrid.Visibility = Visibility.Visible;
 		}
 
-		private void StartStreaming360p_Click(object sender, RoutedEventArgs e)
+		void Streaming360p()
 		{
 			Log("360p media selected");
 			StatusBar.Text = "Streaming 360p media";
 			StartStack.Children.Clear();
 			PlayerWindow.Visibility = Visibility.Visible;
 			ResetVariables();
-			GetFileSize(Media360p);
+
+			// query file size from server
+			//GetFileSize(Media360p);
+			SetFileSizeAndSource(Media360p, FileSize360P);
+
 			StatusGrid.Visibility = Visibility.Visible;
+		}
+
+		private void StartStreaming1080p_Click(object sender, RoutedEventArgs e)
+		{
+			Streaming1080p();
+		}
+
+		private void StartStreaming720p_Click(object sender, RoutedEventArgs e)
+		{
+			Streaming720p();
+		}
+
+		private void StartStreaming480p_Click(object sender, RoutedEventArgs e)
+		{
+			Streaming480p();
+		}
+
+		private void StartStreaming360p_Click(object sender, RoutedEventArgs e)
+		{
+			Streaming360p();
 		}
 
 		private void Pause(object sender, RoutedEventArgs e)
