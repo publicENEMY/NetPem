@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Unofficial.SilverlightToolkit-All</id>
+    <version>5.2011.11</version>
+    <title>Silverlight Toolkit - All</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://silverlight.codeplex.com/license</licenseUrl>
+    <projectUrl>http://silverlight.codeplex.com/</projectUrl>
+    <iconUrl>http://silverlight.microsoft.com/assets/sl-32.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>The complete Microsoft Silverlight Toolkit.  Details at http://silverlight.codeplex.com</description>
+    <releaseNotes />
+    <copyright />
+    <language>en-US</language>
+    <tags>silverlight toolkit sltoolkit</tags>
+    <dependencies>
+      <dependency id="Unofficial.SilverlightToolkit-Core" version="5.2011.11" />
+      <dependency id="Unofficial.SilverlightToolkit-Data" version="5.2011.11" />
+      <dependency id="Unofficial.SilverlightToolkit-DataViz" version="5.2011.11" />
+      <dependency id="Unofficial.SilverlightToolkit-Input" version="5.2011.11" />
+      <dependency id="Unofficial.SilverlightToolkit-Layout" version="5.2011.11" />
+      <dependency id="Unofficial.SilverlightToolkit-Theming" version="5.2011.11" />
+    </dependencies>
+  </metadata>
+</package>

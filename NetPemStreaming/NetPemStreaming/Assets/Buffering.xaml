@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Canvas xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="Buffering" Width="22.6667" Height="21.3333" Clip="F1 M 0,0L 22.6667,0L 22.6667,21.3333L 0,21.3333L 0,0">
+	<Canvas x:Name="BufferingCanvas" Width="22.6667" Height="21.3333" Canvas.Left="0" Canvas.Top="0">
+		<Path x:Name="Path" Width="21.0533" Height="21.3333" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Fill="#FF606163" Data="F1 M 17.1413,11.9893C 16.5373,15.088 13.8133,17.3333 10.6466,17.3333C 8.90666,17.3333 7.26131,16.6093 6.03198,15.4067L 8.07865,13.3333L 1.10531,13.3333L 1.10531,20.1307L 3.08931,18.2707C 5.07332,20.224 7.78666,21.3333 10.6,21.3333C 15.672,21.3333 20.084,17.724 21.0533,12.7546M 10.4173,3.99467C 12.1626,3.99467 13.808,4.71867 15.0426,5.92131L 12.996,8L 19.772,8L 19.772,1.19731L 17.8907,3.06266C 15.9067,1.104 13.24,0 10.428,0C 5.35465,0 0.96932,3.604 0,8.57332L 3.92265,9.33866C 4.52665,6.24398 7.25598,3.99467 10.4173,3.99467 Z "/>
+	</Canvas>
+</Canvas>

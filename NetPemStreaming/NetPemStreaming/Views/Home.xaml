@@ -1,0 +1,178 @@
+﻿<navigation:Page x:Class="NetPemStreaming.Home" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
+    xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit" 
+    mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"
+    Title="Home"
+    Style="{StaticResource PageStyle}">
+
+    <Grid x:Name="LayoutRoot">
+        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible" BorderThickness="0">
+
+            <StackPanel x:Name="ContentStackPanel">
+                <Grid Height="42"/>
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="42"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Border BorderBrush="White" HorizontalAlignment="Right" VerticalAlignment="Top" CornerRadius="2">
+                        <StackPanel Orientation="Vertical">
+                            <Grid>
+                                <Button Content="" Height="480" Style="{StaticResource ButtonStyle}" Width="320" Click="btnStartStreamingMeasurement_Click" BorderBrush="{x:Null}" Foreground="{x:Null}" Margin="4" Background="{x:Null}"/>
+                            </Grid>
+                            <TextBlock TextWrapping="Wrap" Text="Version 1.0.133" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+                        </StackPanel>
+                    </Border>
+                    <Grid Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <StackPanel Orientation="Vertical">
+                            <Border x:Name="Card" CornerRadius="2" BorderThickness="1" Margin="4" Width="400">
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FFA4A4A4" Offset="0"/>
+                                        <GradientStop Color="White" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                                <StackPanel>
+                                    <Grid VerticalAlignment="Top">
+                                        <Grid.Background>
+                                            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                                                <GradientStop Color="#FFFFC131"/>
+                                                <GradientStop Color="#FFF15A22" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Grid.Background>
+                                        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" Margin="8" Text="How it works?" FontSize="16"/>
+                                    </Grid>
+                                    <Grid>
+                                        <Grid.Background>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="White" Offset="0"/>
+                                                <GradientStop Color="#FFCDCDCD" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Grid.Background>
+                                        <RichTextBox Foreground="Black" BorderThickness="0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="8" IsReadOnly="True" FontSize="13.333">
+                                            <Paragraph>
+                                                <Run Text="A video is streamed to your pc. "/>
+                                                <Run Text="The number of rebuffering and dropped frames captured during streaming session is then compared to a baseline. "/>
+                                                <Run Text="If your number fares better than the baseline, then your streaming experience is GOOD."/>
+                                            </Paragraph>
+                                            <Paragraph/>
+                                            <Paragraph>
+                                                <Run Text="The whole process takes about 30 seconds; depending on your pc and network performance. "/>
+                                            </Paragraph>
+                                            <Paragraph/>
+                                            <Paragraph/>
+                                        </RichTextBox>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                            <Grid Height="42"/>
+                            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <toolkit:Accordion HorizontalAlignment="Center" Width="400" SelectionSequence="CollapseBeforeExpand" SelectionMode="ZeroOrMore">
+                                    <toolkit:AccordionItem Header="What is streaming experience?" Style="{StaticResource AccordionItemStyle}">
+                                        <RichTextBox VerticalScrollBarVisibility="Auto" Height="112" Padding="8" IsReadOnly="True" BorderThickness="0" Background="{x:Null}" >
+                                            <Paragraph>
+                                                <Run Text="Streaming experience is defined as the impression a person feel after undergo a video streaming event. While we dont technically measure a person emotional feelings, we do measure the technicalities that contributes to the streaming experience. Streaming experience is rated as either GOOD or POOR."/>
+                                            </Paragraph>
+                                        </RichTextBox>
+                                    </toolkit:AccordionItem>
+                                    <toolkit:AccordionItem Header="GOOD and POOR streaming experience?" Style="{StaticResource AccordionItemStyle}">
+                                        <RichTextBox VerticalScrollBarVisibility="Auto" Height="90" Padding="8" IsReadOnly="True" BorderThickness="0" Background="{x:Null}" >
+                                            <Paragraph>
+                                                <Run Text="GOOD means there are no streaming problem encountered during the measurement process."/>
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="POOR means the streaming could be better and is not up to expectation."/>
+                                            </Paragraph>
+                                        </RichTextBox>
+                                    </toolkit:AccordionItem>
+                                    <toolkit:AccordionItem Header="System requirements" Style="{StaticResource AccordionItemStyle}">
+                                        <RichTextBox VerticalScrollBarVisibility="Auto" Height="220" Padding="8" IsReadOnly="True" BorderThickness="0" Background="{x:Null}" >
+                                            <Paragraph>
+                                                <Run Text="1. Microsoft Windows 7 Service Pack 1."/>
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="2. Best viewed with Internet Explorer v10.0.9200.16521. Chrome, Safari, Firefox and other browsers are not supported."/>
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="3. Microsoft Silverlight v5.1.20125.0."/>
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="4. X86 or x64 1.6-gigahertz (GHz) or higher processor."/>
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="5. 512-MB of RAM."/>
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="6. If using laptop, dont use batteries. Use power plug."/>
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="7. Cookies enabled at browser."/>
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="8. Use wired connectivity and isolate any other pc that shares the same internet connection."/>
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="9. Close any other internet application running on your pc during the testing."/>
+                                            </Paragraph>
+                                        </RichTextBox>
+                                    </toolkit:AccordionItem>
+                                    <toolkit:AccordionItem Header="Why should I measure my streaming experience?" Style="{StaticResource AccordionItemStyle}" Visibility="Collapsed">
+                                        <RichTextBox VerticalScrollBarVisibility="Auto" Height="110" Padding="8" IsReadOnly="True" BorderThickness="0" Background="{x:Null}" >
+                                            <Paragraph>
+                                                <Run Text="You don't. But if you are experiencing bad streaming performance, you are encourage to do so."/>
+                                            </Paragraph>
+                                        </RichTextBox>
+                                    </toolkit:AccordionItem>
+                                    <toolkit:AccordionItem Header="Why that video?" Style="{StaticResource AccordionItemStyle}">
+                                        <RichTextBox VerticalScrollBarVisibility="Auto" Padding="8" IsReadOnly="True" BorderThickness="0" Background="{x:Null}" Height="120" >
+                                            <Paragraph>
+                                                <Run Text="For the test subject, we need a freely available 30 seconds of H.264 full high definition media. The media also required to have camera panning segments and fast motion segments. There are also other factors that we looked for (production quality, etc) and in the end, this media provides the best subject for measuring streaming performance."/>
+                                            </Paragraph>
+                                        </RichTextBox>
+                                    </toolkit:AccordionItem>
+                                    <toolkit:AccordionItem Header="Why Microsoft Silverlight?" Style="{StaticResource AccordionItemStyle}">
+                                        <RichTextBox VerticalScrollBarVisibility="Auto" Padding="8" IsReadOnly="True" BorderThickness="0" Background="{x:Null}" Height="50" >
+                                            <Paragraph>
+                                                <Run Text="Microsoft Silverlight has matured H.264 hardware acceleration video decoding support."/>
+                                            </Paragraph>
+                                        </RichTextBox>
+                                    </toolkit:AccordionItem>
+                                    <toolkit:AccordionItem Header="Why can't I change the video resolution by default?" Background="White" Style="{StaticResource AccordionItemStyle}">
+                                        <RichTextBox VerticalScrollBarVisibility="Auto" Padding="8" IsReadOnly="True" BorderThickness="0" Background="{x:Null}" Height="50" >
+                                            <Paragraph>
+                                                <Run Text="The default resolution is recommended based on your bandwidth subscription. However, you may choose other resolution after default resolution test completed."/>
+                                            </Paragraph>
+                                        </RichTextBox>
+                                    </toolkit:AccordionItem>
+                                    <toolkit:AccordionItem Header="Developers" Background="White" Style="{StaticResource AccordionItemStyle}" Visibility="Collapsed">
+                                        <RichTextBox VerticalScrollBarVisibility="Auto" Height="112" Padding="8" IsReadOnly="True" BorderThickness="0" Background="{x:Null}" >
+                                            <Paragraph>
+                                                <Run Text="Dr. Ahmad Tajuddin bin Hj. Samsudin"/>
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="Syaiful Nizam bin Yahya"/>
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="Awang Ibrahim bin Awang Daud"/>
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="Khalil Huzairi bin Ahmad"/>
+                                            </Paragraph>
+                                        </RichTextBox>
+                                    </toolkit:AccordionItem>
+                                </toolkit:Accordion>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+                <Grid Height="42"/>
+            </StackPanel>
+
+        </ScrollViewer>
+    </Grid>
+
+</navigation:Page>

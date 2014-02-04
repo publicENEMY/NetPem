@@ -1,0 +1,605 @@
+﻿<navigation:Page x:Name="page" x:Class="StreamingExperience.Views.Streaming" 
+		   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+		   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+		   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		   mc:Ignorable="d"
+		   xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
+		   Title="Streaming Page"
+Style="{StaticResource PageStyle}" SizeChanged="page_SizeChanged">
+	<navigation:Page.Resources>
+		<Style x:Key="PlaybackProgressStyle" TargetType="ProgressBar">
+			<Setter Property="Foreground" Value="#FF027DB8"/>
+			<Setter Property="Background" Value="#FFD2D5D8"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="Maximum" Value="100"/>
+			<Setter Property="IsTabStop" Value="False"/>
+			<Setter Property="BorderBrush">
+				<Setter.Value>
+					<LinearGradientBrush EndPoint=".5,1" StartPoint=".5,0">
+						<GradientStop Color="#FFAEB7BF" Offset="0"/>
+						<GradientStop Color="#FF919EA7" Offset="0.35"/>
+						<GradientStop Color="#FF7A8A99" Offset="0.35"/>
+						<GradientStop Color="#FF647480" Offset="1"/>
+					</LinearGradientBrush>
+				</Setter.Value>
+			</Setter>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="ProgressBar">
+						<Grid x:Name="Root">
+							<VisualStateManager.VisualStateGroups>
+								<VisualStateGroup x:Name="CommonStates">
+									<VisualState x:Name="Determinate"/>
+									<VisualState x:Name="Indeterminate">
+										<Storyboard RepeatBehavior="Forever">
+											<ObjectAnimationUsingKeyFrames Duration="00:00:00" Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="IndeterminateRoot">
+												<DiscreteObjectKeyFrame KeyTime="00:00:00">
+													<DiscreteObjectKeyFrame.Value>
+														<Visibility>Visible</Visibility>
+													</DiscreteObjectKeyFrame.Value>
+												</DiscreteObjectKeyFrame>
+											</ObjectAnimationUsingKeyFrames>
+											<ObjectAnimationUsingKeyFrames Duration="00:00:00" Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="DeterminateRoot">
+												<DiscreteObjectKeyFrame KeyTime="00:00:00">
+													<DiscreteObjectKeyFrame.Value>
+														<Visibility>Collapsed</Visibility>
+													</DiscreteObjectKeyFrame.Value>
+												</DiscreteObjectKeyFrame>
+											</ObjectAnimationUsingKeyFrames>
+										</Storyboard>
+									</VisualState>
+								</VisualStateGroup>
+							</VisualStateManager.VisualStateGroups>
+							<Border x:Name="ProgressBarTrack" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" CornerRadius="3"/>
+							<Grid x:Name="ProgressBarRootGrid">
+								<Rectangle x:Name="ProgressBarRootGradient" Margin="{TemplateBinding BorderThickness}" RadiusY="1.5" RadiusX="1.5" StrokeThickness="1" Canvas.ZIndex="1"/>
+								<Grid x:Name="IndeterminateRoot" Visibility="Collapsed">
+									<Rectangle x:Name="IndeterminateSolidFill" Fill="{TemplateBinding Foreground}" Margin="{TemplateBinding BorderThickness}" Opacity="1" RadiusY="2" RadiusX="2" RenderTransformOrigin="0.5,0.5" StrokeThickness="0"/>
+									<Rectangle x:Name="IndeterminateGradientFill" Margin="{TemplateBinding BorderThickness}" Opacity="0.7" RadiusY="2" RadiusX="2" StrokeThickness="1"/>
+								</Grid>
+								<Grid x:Name="DeterminateRoot" Margin="1">
+									<Rectangle x:Name="ProgressBarIndicator" Fill="{TemplateBinding Foreground}" HorizontalAlignment="Left" Margin="{TemplateBinding BorderThickness}" RadiusY="1.5" RadiusX="1.5" StrokeThickness="0.5"/>
+								</Grid>
+							</Grid>
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		<Style x:Key="BufferProgressStyle" TargetType="ProgressBar">
+			<Setter Property="Foreground" Value="#FF027DB8"/>
+			<Setter Property="Background" Value="#FFD2D5D8"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="Maximum" Value="100"/>
+			<Setter Property="IsTabStop" Value="False"/>
+			<Setter Property="BorderBrush">
+				<Setter.Value>
+					<LinearGradientBrush EndPoint=".5,1" StartPoint=".5,0">
+						<GradientStop Color="#FFAEB7BF" Offset="0"/>
+						<GradientStop Color="#FF919EA7" Offset="0.35"/>
+						<GradientStop Color="#FF7A8A99" Offset="0.35"/>
+						<GradientStop Color="#FF647480" Offset="1"/>
+					</LinearGradientBrush>
+				</Setter.Value>
+			</Setter>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="ProgressBar">
+						<Grid x:Name="Root">
+							<VisualStateManager.VisualStateGroups>
+								<VisualStateGroup x:Name="CommonStates">
+									<VisualState x:Name="Determinate"/>
+									<VisualState x:Name="Indeterminate">
+										<Storyboard RepeatBehavior="Forever">
+											<DoubleAnimation Duration="00:00:.5" From="0" To="20" Storyboard.TargetProperty="(Shape.Fill).(LinearGradientBrush.Transform).(TransformGroup.Children)[0].X" Storyboard.TargetName="IndeterminateGradientFill"/>
+											<ObjectAnimationUsingKeyFrames Duration="00:00:00" Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="IndeterminateRoot">
+												<DiscreteObjectKeyFrame KeyTime="00:00:00">
+													<DiscreteObjectKeyFrame.Value>
+														<Visibility>Visible</Visibility>
+													</DiscreteObjectKeyFrame.Value>
+												</DiscreteObjectKeyFrame>
+											</ObjectAnimationUsingKeyFrames>
+											<ObjectAnimationUsingKeyFrames Duration="00:00:00" Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="DeterminateRoot">
+												<DiscreteObjectKeyFrame KeyTime="00:00:00">
+													<DiscreteObjectKeyFrame.Value>
+														<Visibility>Collapsed</Visibility>
+													</DiscreteObjectKeyFrame.Value>
+												</DiscreteObjectKeyFrame>
+											</ObjectAnimationUsingKeyFrames>
+										</Storyboard>
+									</VisualState>
+								</VisualStateGroup>
+							</VisualStateManager.VisualStateGroups>
+							<Border x:Name="ProgressBarTrack" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" CornerRadius="3"/>
+							<Grid x:Name="ProgressBarRootGrid">
+								<Rectangle x:Name="ProgressBarRootGradient" Margin="{TemplateBinding BorderThickness}" RadiusY="1.5" RadiusX="1.5" Stroke="LightGray" StrokeThickness="1" Canvas.ZIndex="1"/>
+								<Grid x:Name="IndeterminateRoot" Visibility="Collapsed">
+									<Rectangle x:Name="IndeterminateSolidFill" Fill="{TemplateBinding Foreground}" Margin="{TemplateBinding BorderThickness}" Opacity="1" RadiusY="2" RadiusX="2" RenderTransformOrigin="0.5,0.5" Stroke="#FF448DCA" StrokeThickness="0"/>
+									<Rectangle x:Name="IndeterminateGradientFill" Margin="{TemplateBinding BorderThickness}" Opacity="0.7" RadiusY="2" RadiusX="2" StrokeThickness="1">
+										<Rectangle.Fill>
+											<LinearGradientBrush EndPoint="0,1" MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="20,1">
+												<LinearGradientBrush.Transform>
+													<TransformGroup>
+														<TranslateTransform X="0"/>
+														<SkewTransform AngleX="-30"/>
+													</TransformGroup>
+												</LinearGradientBrush.Transform>
+												<GradientStop Color="#FFFFFFFF" Offset="0"/>
+												<GradientStop Color="#00FFFFFF" Offset=".25"/>
+												<GradientStop Color="#FFFFFFFF" Offset="0.85"/>
+											</LinearGradientBrush>
+										</Rectangle.Fill>
+									</Rectangle>
+								</Grid>
+								<Grid x:Name="DeterminateRoot" Margin="1">
+									<Rectangle x:Name="ProgressBarIndicator" HorizontalAlignment="Left" Margin="{TemplateBinding BorderThickness}" RadiusY="1.5" RadiusX="1.5" StrokeThickness="0.5" Fill="#FF6A6A6A"/>
+								</Grid>
+							</Grid>
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</navigation:Page.Resources>
+	<Grid x:Name="LayoutRoot">
+		<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+			<StackPanel>
+				<StackPanel x:Name="PlayerWindow" Background="#FFD1D1D1" HorizontalAlignment="Center" VerticalAlignment="Top">
+					<Grid x:Name="gridPlayer" HorizontalAlignment="Center" VerticalAlignment="Center" >
+						<MediaElement x:Name="SilverlightPlayer" 
+					BufferingProgressChanged="SilverlightPlayer_BufferingProgressChanged" 
+					CurrentStateChanged="SilverlightPlayer_CurrentStateChanged" 
+					DownloadProgressChanged="SilverlightPlayer_DownloadProgressChanged" 
+					MediaEnded="SilverlightPlayer_MediaEnded" 
+					MediaFailed="SilverlightPlayer_MediaFailed" 
+					MediaOpened="SilverlightPlayer_MediaOpened" 
+					Volume="1" UseLayoutRounding="False" MinWidth="0" MinHeight="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+					</Grid>
+					<StackPanel Background="#FFA8A8A8">
+						<Grid>
+							<ProgressBar x:Name="pbBufferProgress" Value="{Binding DownloadProgress, ElementName=SilverlightPlayer}" Maximum="1" Height="10" BorderBrush="{x:Null}" VerticalAlignment="Center" Style="{StaticResource BufferProgressStyle}"/>
+							<ProgressBar x:Name="pbPlaybackProgress" Value="{Binding Position.TotalSeconds, ElementName=SilverlightPlayer}" Maximum="1" Height="10" Foreground="Red" Background="{x:Null}" BorderBrush="{x:Null}" VerticalAlignment="Center" Style="{StaticResource PlaybackProgressStyle}"/>
+						</Grid>
+						<Grid Height="42" Background="#FF1B1B1B">
+							<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+								<Viewbox x:Name="PlayPause" Margin="4,2" Width="20" HorizontalAlignment="Left">
+									<Grid Height="21" Width="20">
+										<Canvas x:Name="iconPlay" Width="13.3333" Height="21.3333" Clip="F1 M 0,0L 13.3333,0L 13.3333,21.3333L 0,21.3333L 0,0">
+											<Canvas x:Name="Layer_2" Width="13.3333" Height="21.3333" Canvas.Left="0" Canvas.Top="0">
+												<Path x:Name="Path2" Width="13.3333" Height="21.3333" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Data="M 0,0L 0,21.3333L 13.3333,10.6667L 0,0 Z " Fill="#FF757575"/>
+											</Canvas>
+										</Canvas>
+										<Canvas x:Name="iconPause" Width="13.3333" Height="21.3333" Clip="F1 M 0,0L 13.3333,0L 13.3333,21.3333L 0,21.3333L 0,0" Visibility="Collapsed">
+											<Canvas x:Name="Layer_4" Width="13.3333" Height="21.3333" Canvas.Left="0" Canvas.Top="0">
+												<Rectangle x:Name="Rectangle" Width="5.33333" Height="21.3333" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Fill="#FF757575"/>
+												<Rectangle x:Name="Rectangle_0" Width="5.33333" Height="21.3333" Canvas.Left="8" Canvas.Top="0" Stretch="Fill" Fill="#FF757575"/>
+											</Canvas>
+										</Canvas>
+										<Canvas x:Name="iconStop" Width="13.3333" Height="13.3333" Clip="F1 M 0,0L 13.3333,0L 13.3333,13.3333L 0,13.3333L 0,0" Visibility="Collapsed">
+											<Canvas x:Name="Layer_5" Width="13.3333" Height="13.3333" Canvas.Left="0" Canvas.Top="0">
+												<Rectangle x:Name="Rectangle1" Width="13.3333" Height="13.3333" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Fill="#FF757575"/>
+											</Canvas>
+										</Canvas>
+										<Canvas x:Name="Lock" Width="16" Height="18.6667" Clip="F1 M 0,0L 16,0L 16,18.6667L 0,18.6667L 0,0" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+											<Canvas x:Name="Layer_6" Width="16" Height="18.6667" Canvas.Left="0" Canvas.Top="0">
+												<Path x:Name="Path3" Width="5.71429" Height="6.66667" Stretch="Fill" Fill="#FFFF3F06" Data="F1 M 8.00003,11.7143L 7.04765,11.7143L 7.58908,10.63C 7.4067,10.5014 7.28575,10.2895 7.28575,10.0476C 7.28575,9.65334 7.60574,9.33334 8.00003,9.33334C 8.39432,9.33334 8.71432,9.65334 8.71432,10.0476C 8.71432,10.2895 8.59337,10.5014 8.41099,10.63L 8.95241,11.7143M 6.57146,8.30667C 6.57146,7.55857 7.17765,6.95239 7.92574,6.95239L 8.07432,6.95239C 8.82241,6.95239 9.4286,7.55857 9.4286,8.30667L 9.4286,8.38096L 6.57146,8.38096M 10.381,8.38096L 10.381,8.30667C 10.381,7.03239 9.3486,6.00001 8.07432,6.00001L 7.92574,6.00001C 6.65146,6.00001 5.61908,7.03239 5.61908,8.30667L 5.61908,8.38096L 5.14289,8.38096L 5.14289,12.6667L 10.8572,12.6667L 10.8572,8.38096L 10.381,8.38096 Z " Canvas.Left="10" Canvas.Top="12"/>
+											</Canvas>
+										</Canvas>
+									</Grid>
+								</Viewbox>
+								<Viewbox x:Name="Volume" Margin="4,2" Width="20" HorizontalAlignment="Left">
+									<Grid Width="20" Height="21">
+										<Canvas x:Name="iconVolumeMin" Clip="F1 M 0,0L 9.33333,0L 9.33333,21.3333L 0,21.3333L 0,0" Width="13.3333" Height="21.3333">
+											<Canvas x:Name="Layer_3" Width="9.33333" Height="21.3333" Canvas.Left="0" Canvas.Top="0">
+												<Path x:Name="Path" Width="9.31201" Height="21.3333" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Fill="White" Data="M 0,16L 0,5.35864L 3.97868,5.35864L 9.31201,0L 9.31201,21.3333L 3.97868,16L 0,16 Z "/>
+											</Canvas>
+										</Canvas>
+										<Canvas x:Name="iconVolumeFull" Clip="F1 M 0,0L 21.3333,0L 21.3333,21.3333L 0,21.3333L 0,0" Width="13.3333" Height="21.3333">
+											<Canvas x:Name="Layer_1" Width="21.3333" Height="21.3333" Canvas.Left="0" Canvas.Top="0">
+												<Path x:Name="Path1" Width="21.3333" Height="21.3333" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Fill="White" Data="M 0,16L 0,5.35864L 3.97868,5.35864L 9.31201,0L 9.31201,21.3333L 3.97868,16M 13.672,16.1093L 12.9893,14.9587C 14.0213,14.3533 14.6667,12.5773 14.6667,10.6453C 14.6667,8.70801 14.016,6.93201 12.984,6.32267L 13.6613,5.17733C 15.1253,6.03601 16,8.18266 16,10.6453C 16,13.104 15.1307,15.2493 13.672,16.1093 Z M 15.4893,21.26L 14.9067,20.0627C 18.0627,18.52 20,14.844 20,10.468C 20,6.20801 18.1507,2.84933 14.9067,1.25464L 15.4893,0.062664C 19.2133,1.88534 21.3333,5.68266 21.3333,10.468C 21.3333,15.3586 19.104,19.4893 15.4893,21.26 Z "/>
+											</Canvas>
+										</Canvas>
+									</Grid>
+								</Viewbox>
+
+								<!--<Button Content="Stop" Width="75" Click="Button_Click_2"/>-->
+								<Slider Width="100" Maximum="1" LargeChange="0.1" SmallChange="0.01" Value="{Binding Volume, ElementName=SilverlightPlayer, Mode=TwoWay}" Margin="4,0" MouseLeftButtonUp="Slider_MouseLeftButtonUp"/>
+								<TextBlock x:Name="tbMediaTimeline" TextWrapping="Wrap" VerticalAlignment="Center" Margin="0,3.5" Text="0:00 / 0:00" Foreground="White"/>
+							</StackPanel>
+							<StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
+								<TextBlock x:Name="tbResolution" TextWrapping="Wrap" Text="" Margin="8" Foreground="#FF757575" FontStyle="Italic" FontSize="12" FontWeight="Bold"/>
+							</StackPanel>
+						</Grid>
+					</StackPanel>
+				</StackPanel>
+				<StackPanel >
+					<!--Source="http://58.26.233.174/Media/Toy story 3 trailers/Toy Story 3_ Trailer(64p_H.264-AAC)-attract.mp4?query=queryvalue"-->
+					<StackPanel x:Name="debugStack">
+						<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+							<Button x:Name="btnPlayPause" Content="Play/Pause" Click="Button_PlayPause" Height="23" Padding="24,3"/>
+							<Button x:Name="btnStop" Content="Stop" Width="75" Click="btnStop_Click"/>
+						</StackPanel>
+						<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+							<Border BorderThickness="2" BorderBrush="White" CornerRadius="5" Padding="5" Margin="2">
+								<StackPanel>
+									<TextBlock TextWrapping="Wrap" Text="Debugger" FontWeight="Bold"/>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Current Source" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbCurrentSource" TextWrapping="Wrap" Height="23" Width="130" Text="{Binding Source, ElementName=SilverlightPlayer, Mode=TwoWay}"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Source" VerticalAlignment="Center" Width="145"/>
+										<ComboBox x:Name="cbSource" Width="130" SelectedIndex="0" SelectionChanged="cbSource_SelectionChanged" IsSynchronizedWithCurrentItem="False" Height="23">
+											<!--<ComboBoxItem Content="http://58.26.233.174/Media/BigBuckBunny/big_buck_bunny_1080p_h264.mp4?query=queryvalue"/>-->
+											<!--<ComboBoxItem Content="http://58.26.233.174/Media/BigBuckBunny/Trailer/trailer_1080p.mp4?query=queryvalue"/>-->
+											<!--<ComboBoxItem Content="http://58.26.233.174/Media/BigBuckBunny/Trailer/trailer_720p.mp4?query=queryvalue"/>-->
+											<ComboBoxItem Content="http://58.26.233.174/Media/Toy story 3 trailers/Toy_Story_3_ Trailer(0240p_H.264-AAC_0336kbps).mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Toy story 3 trailers/Toy_Story_3_ Trailer(0360p_H.264-AAC_0574kbps).mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Toy story 3 trailers/Toy_Story_3_ Trailer(0480p_H.264-AAC_1189kbps).mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Toy story 3 trailers/Toy_Story_3_ Trailer(0720p_H.264-AAC_2110kbps).mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Toy story 3 trailers/Toy_Story_3_ Trailer(1080p_H.264-AAC_3597kbps).mp4?query=queryvalue"/>
+											<!--<ComboBoxItem Content="http://58.26.233.174/Media/Big Buck Bunny/Big Buck Bunny(240p_H.263-MP3).flv?query=queryvalue"/>
+										<ComboBoxItem Content="http://58.26.233.174/Media/Big Buck Bunny/Big Buck Bunny(360p_H.264-AAC).flv?query=queryvalue"/>-->
+											<ComboBoxItem Content="http://58.26.233.174/Media/Big Buck Bunny/Big Buck Bunny(360p_H.264-AAC) low.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Big Buck Bunny/Big Buck Bunny(360p_H.264-AAC).mp4?query=queryvalue"/>
+											<!--<ComboBoxItem Content="http://58.26.233.174/Media/Big Buck Bunny/Big Buck Bunny(480p_H.264-AAC).flv?query=queryvalue"/>-->
+											<ComboBoxItem Content="http://58.26.233.174/Media/Big Buck Bunny/Big Buck Bunny(720p_H.264-AAC).mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Apple/Act of Valor (Trailer)_1080p-trailer.mp4?query=queryvalue"/>
+											<!--<ComboBoxItem Content="http://58.26.233.174/Media/BigBuckBunny/Trailer/trailer_480p.mp4?query=queryvalue"/>-->
+											<ComboBoxItem Content="http://58.26.233.174/Media/BigBuckBunny/Trailer/trailer_iphone.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Gametrailers/Diablo III - Review [1280x720].mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Silverlight/Oman 4000kbps 1080p VBR.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Silverlight/Oman 1995kbps 1080p CBR Youtube.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Silverlight/Oman 1995kbps 720p CBR Youtube.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Silverlight/Oman 1632kbps 1080p CBR HSB.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Silverlight/Oman 1632kbps 360p CBR HSB.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/TearsOfSteel/Tears of Steel - (240p_H.264-AAC) 80kbps.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/TearsOfSteel/Tears of Steel - (360p_H.264-AAC) 600kbps.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/TearsOfSteel/Tears of Steel - (480p_H.264-AAC) 857kbps.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/TearsOfSteel/Tears of Steel - (720p_H.264-AAC) 2000kbps.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/TearsOfSteel/Tears of Steel - (720p_H.264-AAC) 4000kbps.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/TearsOfSteel/Tears of Steel - (1080p_H.264-AAC) 4000kbps.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/TearsOfSteel/Tears of Steel - (1080p_H.264-AAC) 6500kbps.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Youtube/Battlefield 3 - Multiplayer Gameplay Trailer(240p_H.264-AAC) 56kbps.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Youtube/Battlefield 3 - Multiplayer Gameplay Trailer(360p_H.264-AAC) 700kbps.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Youtube/Battlefield 3 - Multiplayer Gameplay Trailer(360p_H.264-AAC) 800kbps.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Youtube/Battlefield 3 - Multiplayer Gameplay Trailer(480p_H.264-AAC) 1200kbps.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Youtube/Battlefield 3 - Multiplayer Gameplay Trailer(720_H.264-AAC) 3000kbps.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Youtube/Battlefield 3 - Multiplayer Gameplay Trailer(1080_H.264-AAC) 6000kbps.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Youtube/Medal of Honor Warfighter _ Multiplayer Launch Gameplay Trailer(240p_H.264-AAC) 56kbps.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Youtube/Medal of Honor Warfighter _ Multiplayer Launch Gameplay Trailer(360p_H.264-AAC) 700kbps.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Youtube/Medal of Honor Warfighter _ Multiplayer Launch Gameplay Trailer(360p_H.264-AAC) 1000kbps.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Youtube/Medal of Honor Warfighter _ Multiplayer Launch Gameplay Trailer(480p_H.264-AAC) 1300kbps.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Youtube/Medal of Honor Warfighter _ Multiplayer Launch Gameplay Trailer(720p_H.264-AAC) 3000kbps.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Youtube/Medal of Honor Warfighter _ Multiplayer Launch Gameplay Trailer(1080p_H.264-AAC) 6000kbps.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://58.26.233.174/Media/Others/Kuroshio Sea (720p_H.264-AAC).mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://ihpnotebook:8888/BigBuckBunny_320x180.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://ihpnotebook/wildlife.wmv?query=queryvalue"/>
+											<ComboBoxItem Content="http://ihpnotebook/big_buck_bunny_1080p_h264.mp4?query=queryvalue"/>
+											<ComboBoxItem Content="http://ihpnotebook:8888/big_buck_bunny_1080p_h264.mp4?query=queryvalue"/>
+										</ComboBox>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Position" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbPosition" TextWrapping="Wrap" Text="{Binding Position, ElementName=SilverlightPlayer}" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Duration" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbDuration" TextWrapping="Wrap" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="23" Margin="0,4" Orientation="Horizontal">
+										<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Buffering Progress" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbBufferingProgress" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="{Binding BufferingProgress, ElementName=SilverlightPlayer}" VerticalAlignment="Top" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Height="23" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Volume" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbVolume" TextWrapping="Wrap" Text="{Binding Volume, ElementName=SilverlightPlayer}" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="23" Margin="0,4" Orientation="Horizontal">
+										<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Current State" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbCurrentState" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="{Binding CurrentState, ElementName=SilverlightPlayer}" VerticalAlignment="Top" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="23" Margin="0,4" Orientation="Horizontal">
+										<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Download Progress" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbDownloadProgress" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="130"/>
+									</StackPanel>
+									<!-- TODO: Make sure download progress offset works-->
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Download Progress Offset" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbDownloadProgressOffset" TextWrapping="Wrap" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Rendered FPS" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbRenderedFPS" TextWrapping="Wrap" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Dropped Frames/s" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbDroppedFrames" TextWrapping="Wrap" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4" Background="White">
+										<TextBlock TextWrapping="Wrap" Text="Width" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbWidth" TextWrapping="Wrap" Text="{Binding NaturalVideoWidth, ElementName=SilverlightPlayer}" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4" Background="White">
+										<TextBlock TextWrapping="Wrap" Text="Height" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbHeight" TextWrapping="Wrap" Text="{Binding NaturalVideoHeight, ElementName=SilverlightPlayer}" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4" Background="White">
+										<TextBlock TextWrapping="Wrap" Text="Player Width" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="playerWidth" TextWrapping="Wrap" Text="{Binding NaturalVideoWidth, ElementName=SilverlightPlayer}" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4" Background="White">
+										<TextBlock TextWrapping="Wrap" Text="Player Height" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="playerHeight" TextWrapping="Wrap" Text="{Binding NaturalVideoHeight, ElementName=SilverlightPlayer}" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4" Background="White">
+										<TextBlock TextWrapping="Wrap" Text="Player Window Width" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="playerWindowWidth" TextWrapping="Wrap" Text="{Binding NaturalVideoWidth, ElementName=SilverlightPlayer}" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4" Background="White">
+										<TextBlock TextWrapping="Wrap" Text="Player Window Height" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="playerWindowHeight" TextWrapping="Wrap" Text="{Binding NaturalVideoHeight, ElementName=SilverlightPlayer}" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4" Background="White">
+										<TextBlock TextWrapping="Wrap" Text="Page Scroller Width" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="pageScrollerWidth" TextWrapping="Wrap" Text="{Binding NaturalVideoWidth, ElementName=SilverlightPlayer}" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4" Background="White">
+										<TextBlock TextWrapping="Wrap" Text="Page Scroller Height" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="pageScrollerHeight" TextWrapping="Wrap" Text="{Binding NaturalVideoHeight, ElementName=SilverlightPlayer}" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4" Background="White">
+										<TextBlock TextWrapping="Wrap" Text="Page Width" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="pageWidth" TextWrapping="Wrap" Text="{Binding NaturalVideoWidth, ElementName=SilverlightPlayer}" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4" Background="White">
+										<TextBlock TextWrapping="Wrap" Text="Page Height" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="pageHeight" TextWrapping="Wrap" Text="{Binding NaturalVideoHeight, ElementName=SilverlightPlayer}" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Height="23" Margin="0,4" Orientation="Horizontal">
+										<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Buffering Time" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbBufferingTime" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="{Binding BufferingTime, ElementName=SilverlightPlayer}" VerticalAlignment="Top" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Media Failed" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbMediaFailed" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Slider Value" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbSliderValue" Height="23" Width="130" Text="{Binding Value, ElementName=pbPlaybackProgress, Mode=TwoWay}"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Slider Max" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbSliderMax" Height="23" Width="130" Text="{Binding Maximum, ElementName=pbPlaybackProgress}"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Position" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbPosition1" TextWrapping="Wrap" Text="{Binding Position.TotalSeconds, ElementName=SilverlightPlayer, Mode=OneWay}" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="HTTP Get" VerticalAlignment="Center" Width="145"/>
+										<ScrollViewer Width="130" Height="84" HorizontalScrollBarVisibility="Visible">
+											<ListBox x:Name="lbHttpGet"/>
+										</ScrollViewer>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="HTTP Post" VerticalAlignment="Center" Width="145"/>
+										<ScrollViewer Height="84" Width="130" HorizontalScrollBarVisibility="Visible">
+											<ListBox x:Name="listBox2"/>
+										</ScrollViewer>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Session Id" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbSessionId" TextWrapping="Wrap" Text="" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Subscription" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbGetSubscription" TextWrapping="Wrap" Text="" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="RecommendedResolution" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbGetRecommended" TextWrapping="Wrap" Text="" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Lower Threshold" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbGetLowerThreshold" TextWrapping="Wrap" Text="" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Upper Threshold" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbGetUpperThreshold" TextWrapping="Wrap" Text="" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Dropped Frames" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbGetDroppedFrames" TextWrapping="Wrap" Text="" Height="23" Width="130"/>
+									</StackPanel>
+
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Buffer Threshold 240p" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbBufferLowerThreshold240p" TextWrapping="Wrap" Text="" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Buffer Threshold 360p" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbBufferLowerThreshold360p" TextWrapping="Wrap" Text="" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Buffer Threshold 480p" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbBufferLowerThreshold480p" TextWrapping="Wrap" Text="" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Buffer Threshold 720p" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbBufferLowerThreshold720p" TextWrapping="Wrap" Text="" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Buffer Threshold 1080p" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbBufferLowerThreshold1080p" TextWrapping="Wrap" Text="" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Drop Threshold 240p" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbDropLowerThreshold240p" TextWrapping="Wrap" Text="" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Drop Threshold 360p" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbDropLowerThreshold360p" TextWrapping="Wrap" Text="" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Drop Threshold 480p" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbDropLowerThreshold480p" TextWrapping="Wrap" Text="" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Drop Threshold 720p" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbDropThreshold720p" TextWrapping="Wrap" Text="" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Drop Threshold 1080p" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbDropThreshold1080p" TextWrapping="Wrap" Text="" Height="23" Width="130"/>
+									</StackPanel>
+
+								</StackPanel>
+							</Border>
+							<Border BorderThickness="2" BorderBrush="White" CornerRadius="5" Padding="5" Margin="2">
+								<StackPanel>
+									<!--<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+									<TextBlock TextWrapping="Wrap" Text="Above Average Frequency" VerticalAlignment="Center" Width="145"/>
+									<TextBox x:Name="tbAboveAverageFrequency" TextWrapping="Wrap" Height="23" Width="130"/>
+								</StackPanel>
+								<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+									<TextBlock TextWrapping="Wrap" Text="Good Frequency" VerticalAlignment="Center" Width="145"/>
+									<TextBox x:Name="tbGoodFrequency" TextWrapping="Wrap" Height="23" Width="130"/>
+								</StackPanel>
+								<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+									<TextBlock TextWrapping="Wrap" Text="Fair Frequency" VerticalAlignment="Center" Width="145"/>
+									<TextBox x:Name="tbFairFrequency" TextWrapping="Wrap" Height="23" Width="130"/>
+								</StackPanel>-->
+									<TextBlock TextWrapping="Wrap" Text="Analysis" FontWeight="Bold"/>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Subscription" VerticalAlignment="Center" Width="145"/>
+										<ComboBox x:Name="cbSubscription" Height="23" Width="130" SelectionChanged="cbSubscription_SelectionChanged">
+											<ComboBoxItem Content="0.3"/>
+											<ComboBoxItem Content="0.5"/>
+											<ComboBoxItem Content="1"/>
+											<ComboBoxItem Content="2"/>
+											<ComboBoxItem Content="4"/>
+											<ComboBoxItem Content="5"/>
+											<ComboBoxItem Content="10"/>
+											<ComboBoxItem Content="20"/>
+											<ComboBoxItem/>
+										</ComboBox>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Selected Subscription" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbSelectedSubscription" TextWrapping="Wrap" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Rebuffering Frequency" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbRebufferingFrequency" TextWrapping="Wrap" Height="23" Width="130"/>
+									</StackPanel>
+									<!--<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+									<TextBlock TextWrapping="Wrap" Text="Result" VerticalAlignment="Center" Width="145"/>
+									<TextBox x:Name="tbResult" TextWrapping="Wrap" Height="23" Width="130"/>
+								</StackPanel>-->
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Frame Drops Accum" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbFrameDropsAccum" TextWrapping="Wrap" Height="23" Width="130"/>
+									</StackPanel>
+									<!--<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+									<TextBlock TextWrapping="Wrap" Text="Frame Drops Good" VerticalAlignment="Center" Width="145"/>
+									<TextBox x:Name="tbFrameDropsGood" TextWrapping="Wrap" Height="23" Width="130"/>
+								</StackPanel>
+								<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+									<TextBlock TextWrapping="Wrap" Text="Frame Drops Bad" VerticalAlignment="Center" Width="145"/>
+									<TextBox x:Name="tbFrameDropsBad" TextWrapping="Wrap" Height="23" Width="130"/>
+								</StackPanel>-->
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Desync" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbDesync" TextWrapping="Wrap" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Bandwidth" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbBandwidth" TextWrapping="Wrap" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Result Rebuffering" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbResultRebuffering" TextWrapping="Wrap" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Result Frame Drops" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbResultDroppedFrames" TextWrapping="Wrap" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Result Desync" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbResultDesync" TextWrapping="Wrap" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Final Result" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbResult" TextWrapping="Wrap" Height="23" Width="130"/>
+									</StackPanel>
+									<Button x:Name="btnSendResult" Content="Invoke Send Result" Click="btnSendResult_Click" HorizontalAlignment="Center" Padding="24,3"/>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Messages" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbMessages" TextWrapping="Wrap" Height="23" Width="130"/>
+									</StackPanel>
+									<Button x:Name="btnToResultsPopup" Content="Invoke popup to results" Click="btnToResultsPopup_Click" HorizontalAlignment="Center" Padding="24,3"/>
+								</StackPanel>
+							</Border>
+							<Border BorderThickness="2" BorderBrush="White" CornerRadius="5" Padding="5" Margin="2">
+								<StackPanel>
+									<TextBlock TextWrapping="Wrap" Text="Buffering timer overrider" FontWeight="Bold"/>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="droppedFramesCounter" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="droppedFramesCounter" TextWrapping="Wrap" Height="23" Width="130" Text="{Binding Position.TotalSeconds, ElementName=SilverlightPlayer, Mode=OneWay}"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="DroppedFramesPerSecond" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="droppedFramesPerSecond" TextWrapping="Wrap" Height="23" Width="130" Text="{Binding Position.TotalSeconds, ElementName=SilverlightPlayer, Mode=OneWay}"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" Text="Position" VerticalAlignment="Center" Width="145"/>
+										<TextBox x:Name="tbOverridePosition" TextWrapping="Wrap" Height="23" Width="130" Text="{Binding Position.TotalSeconds, ElementName=SilverlightPlayer, Mode=OneWay}"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Width="145" Text="Download Progress"/>
+										<TextBox x:Name="tbOverrideDownloadProgress" TextWrapping="Wrap" Height="23" Width="130" Text="{Binding DownloadProgress, ElementName=SilverlightPlayer}"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Width="145" Text="Delta"/>
+										<TextBox x:Name="tbOverrideDelta" TextWrapping="Wrap" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Width="145" Text="Rebuffering Counter"/>
+										<TextBox x:Name="tbRebufferingCounter" TextWrapping="Wrap" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Width="145" Text="Dropped Frames Counter"/>
+										<TextBox x:Name="tbDroppedFramesCounter" TextWrapping="Wrap" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Width="145" Text="Default Rebuffering Counter"/>
+										<TextBox x:Name="tbDefaultRebufferingCounter" TextWrapping="Wrap" Height="23" Width="130"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Width="145" Text="Lower Threshold"/>
+										<TextBox x:Name="tbLowerThreshold" TextWrapping="Wrap" Height="23" Width="130" Text="1"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Width="145" Text="Upper Threshold"/>
+										<TextBox x:Name="tbUpperThreshold" TextWrapping="Wrap" Height="23" Width="130" Text="5"/>
+									</StackPanel>
+									<StackPanel HorizontalAlignment="Left" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,4">
+										<TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Width="145" Text="Timer Enabled"/>
+										<TextBox x:Name="tbTimerEnabled" TextWrapping="Wrap" Height="23" Width="130"/>
+									</StackPanel>
+								</StackPanel>
+							</Border>
+						</StackPanel>
+					</StackPanel>
+				</StackPanel>
+			</StackPanel>
+		</ScrollViewer>
+		<!--<ScrollViewer x:Name="PageScrollViewer" Style="{StaticResource PageScrollViewerStyle}" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" HorizontalContentAlignment="Center" Margin="0" Padding="0">-->
+		<!--<toolkit:ExpressionDarkTheme>-->
+		<!--<toolkit:ExpressionDarkTheme>-->
+	</Grid>
+	<!--</toolkit:ExpressionDarkTheme>-->
+	<!--</Grid>-->
+</navigation:Page>
