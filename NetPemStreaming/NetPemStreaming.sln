@@ -7,39 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamingClient", "Streamin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamingClient.Web", "StreamingClient.Web\StreamingClient.Web.csproj", "{5AC779C3-DEED-4DB7-8952-63D5732F5260}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetPemStreaming", "NetPemStreaming\NetPemStreaming.csproj", "{14835F70-0D37-40C1-A1B4-B22D20644056}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetPemStreaming.Web", "NetPemStreaming.Web\NetPemStreaming.Web.csproj", "{4E14F41F-152A-462A-9E98-9FF7D2CAB5E2}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamingClientNavigation", "StreamingClientNavigation\StreamingClientNavigation.csproj", "{EC3D90E5-21DA-404A-8A9B-48231C2DE413}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamingClientNavigation.Web", "StreamingClientNavigation.Web\StreamingClientNavigation.Web.csproj", "{E62ADF5D-78CF-4611-B80A-08D3AD65C32A}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 7
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://dellserver-pc:8080/tfs/netpem
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = StreamingClient\\StreamingClient.csproj
-		SccProjectName1 = StreamingClient
-		SccLocalPath1 = StreamingClient
-		SccProjectUniqueName2 = StreamingClient.Web\\StreamingClient.Web.csproj
-		SccProjectName2 = StreamingClient.Web
-		SccLocalPath2 = StreamingClient.Web
-		SccProjectUniqueName3 = NetPemStreaming\\NetPemStreaming.csproj
-		SccProjectName3 = NetPemStreaming
-		SccLocalPath3 = NetPemStreaming
-		SccProjectUniqueName4 = NetPemStreaming.Web\\NetPemStreaming.Web.csproj
-		SccProjectName4 = NetPemStreaming.Web
-		SccLocalPath4 = NetPemStreaming.Web
-		SccProjectUniqueName5 = StreamingClientNavigation\\StreamingClientNavigation.csproj
-		SccProjectName5 = StreamingClientNavigation
-		SccLocalPath5 = StreamingClientNavigation
-		SccProjectUniqueName6 = StreamingClientNavigation.Web\\StreamingClientNavigation.Web.csproj
-		SccProjectName6 = StreamingClientNavigation.Web
-		SccLocalPath6 = StreamingClientNavigation.Web
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -53,14 +25,6 @@ Global
 		{5AC779C3-DEED-4DB7-8952-63D5732F5260}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AC779C3-DEED-4DB7-8952-63D5732F5260}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AC779C3-DEED-4DB7-8952-63D5732F5260}.Release|Any CPU.Build.0 = Release|Any CPU
-		{14835F70-0D37-40C1-A1B4-B22D20644056}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{14835F70-0D37-40C1-A1B4-B22D20644056}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{14835F70-0D37-40C1-A1B4-B22D20644056}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{14835F70-0D37-40C1-A1B4-B22D20644056}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4E14F41F-152A-462A-9E98-9FF7D2CAB5E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4E14F41F-152A-462A-9E98-9FF7D2CAB5E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4E14F41F-152A-462A-9E98-9FF7D2CAB5E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4E14F41F-152A-462A-9E98-9FF7D2CAB5E2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EC3D90E5-21DA-404A-8A9B-48231C2DE413}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EC3D90E5-21DA-404A-8A9B-48231C2DE413}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC3D90E5-21DA-404A-8A9B-48231C2DE413}.Release|Any CPU.ActiveCfg = Release|Any CPU

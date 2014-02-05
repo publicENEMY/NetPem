@@ -19,7 +19,7 @@
     </SupportedCultures>
     <XapOutputs>true</XapOutputs>
     <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
-    <XapFilename>StreamingClientNavigation.xap</XapFilename>
+    <XapFilename>StreamingClient.xap</XapFilename>
     <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
     <SilverlightAppEntry>StreamingClientNavigation.App</SilverlightAppEntry>
     <TestPageFileName>StreamingClientNavigationTestPage.html</TestPageFileName>
@@ -156,7 +156,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Views\TheAdventuresofTintin2sm.png" />
-    <Resource Include="Views\Toy Story 3 %28Official Movie Poster%29 sm.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

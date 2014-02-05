@@ -6,12 +6,12 @@
            mc:Ignorable="d"
            xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit" 
            xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
-           d:DesignWidth="640" d:DesignHeight="1000"
+           d:DesignWidth="640" d:DesignHeight="1000" SizeChanged="Streaming_OnSizeChanged"
            Title="Streaming Page">
     <Grid x:Name="LayoutRoot" >
-        <ScrollViewer>
+        <ScrollViewer x:Name="PageScrollViewer" >
             <StackPanel >
-                <Grid x:Name="PlayerWindow" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                <Grid x:Name="PlayerWindow" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="640" MinHeight="360" >
                     <Border BorderThickness="4" BorderBrush="Black">
                         <StackPanel>
                             <MediaElement x:Name="MediaPlayer" MinWidth="640" MinHeight="360" HorizontalAlignment="Center" VerticalAlignment="Center" />

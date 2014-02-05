@@ -182,6 +182,8 @@ namespace StreamingClientNavigation.Views
 			MediaPlayer.RateChanged += MediaPlayer_RateChanged;
 
 			//PlayerWindow.Visibility = Visibility.Collapsed;
+
+			PageScrollViewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
 		}
 
 		void PlaybackUpdates(object sender, EventArgs e)
@@ -632,6 +634,12 @@ namespace StreamingClientNavigation.Views
 			Log("Manual Play");
 			MediaPlayer.Play();
 
+		}
+
+		private void Streaming_OnSizeChanged(object sender, SizeChangedEventArgs e)
+		{
+			Log("Window size changed");
+			UpdatePlayerWindowSize();
 		}
 	}
 }
