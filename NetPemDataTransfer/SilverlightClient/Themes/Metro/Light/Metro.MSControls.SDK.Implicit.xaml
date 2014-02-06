@@ -1,10 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-                    xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk" 
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-                    xmlns:system="clr-namespace:System;assembly=mscorlib" 
-                    mc:Ignorable="d">
+					xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk" 
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+					xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+					xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+					xmlns:system="clr-namespace:System;assembly=mscorlib" 
+					mc:Ignorable="d">
 
 	<!-- *********************************  RESOURCES  ********************************* -->
 	<ResourceDictionary.MergedDictionaries>
@@ -21,10 +21,10 @@
 	<SolidColorBrush x:Key="TabItemSelectedBackgroundBrush" Color="{StaticResource Color_009}" />
 	<SolidColorBrush x:Key="TabItemSelectedBorderBrush" Color="{StaticResource Color_004}" />
 	<SolidColorBrush x:Key="TabItemFocusedBorderBrush" Color="{StaticResource Color_024}" />
-    <SolidColorBrush x:Key="TabItemTexForegroundBrush" Color="{StaticResource Color_009}" Opacity="0.7" />
-    <SolidColorBrush x:Key="TabItemTexSelectedForegroundBrush" Color="{StaticResource Color_024}" />
+	<SolidColorBrush x:Key="TabItemTexForegroundBrush" Color="{StaticResource Color_009}" Opacity="0.7" />
+	<SolidColorBrush x:Key="TabItemTexSelectedForegroundBrush" Color="{StaticResource Color_024}" />
 
-    <!--  GridSplitter Brushes -->
+	<!--  GridSplitter Brushes -->
 	<SolidColorBrush x:Key="GridSplitterBackgroundBrush" Color="{StaticResource Color_008}" />
 	<SolidColorBrush x:Key="GridSplitterBorderBrush" Color="{StaticResource Color_004}" />
 	<SolidColorBrush x:Key="GridSplitterHoverBackgroundBrush" Color="{StaticResource Color_006}" />
@@ -131,7 +131,7 @@
 						<Grid x:Name="TemplateTopSelected" Visibility="Collapsed" Canvas.ZIndex="1">
 							<Border BorderBrush="{StaticResource TabItemSelectedBorderBrush}" BorderThickness="1,1,1,0" Background="{StaticResource TabItemSelectedBackgroundBrush}" Margin="-2,-2,-2,0">
 								<Grid>
-                                    <ContentControl x:Name="HeaderTopSelected" MinHeight="26" IsTabStop="False" Foreground="{StaticResource TabItemTexSelectedForegroundBrush}" FontSize="{TemplateBinding FontSize}" HorizontalAlignment="Center" Margin="{TemplateBinding Padding}" Cursor="{TemplateBinding Cursor}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+									<ContentControl x:Name="HeaderTopSelected" MinHeight="26" IsTabStop="False" Foreground="{StaticResource TabItemTexSelectedForegroundBrush}" FontSize="{TemplateBinding FontSize}" HorizontalAlignment="Center" Margin="{TemplateBinding Padding}" Cursor="{TemplateBinding Cursor}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
 								</Grid>
 							</Border>
 							<Border x:Name="FocusVisualTop" BorderBrush="{StaticResource TabItemFocusedBorderBrush}" BorderThickness="1,1,1,0" Margin="-2,-2,-2,0" Visibility="Collapsed" IsHitTestVisible="false" />
@@ -144,7 +144,7 @@
 									<Border x:Name="BorderTopHover" Margin="-1 " BorderThickness="1" Background="{StaticResource TabItemHoverBackgroundBrush}" Visibility="Collapsed" />
 									<Border x:Name="GradientTop">
 										<Grid>
-                                            <ContentControl x:Name="HeaderTopUnselected" MinHeight="26" IsTabStop="False" Foreground="{StaticResource TabItemTexForegroundBrush}" FontSize="{TemplateBinding FontSize}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="{TemplateBinding Padding}" Cursor="{TemplateBinding Cursor}" />
+											<ContentControl x:Name="HeaderTopUnselected" MinHeight="26" IsTabStop="False" Foreground="{StaticResource TabItemTexForegroundBrush}" FontSize="{TemplateBinding FontSize}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="{TemplateBinding Padding}" Cursor="{TemplateBinding Cursor}" />
 										</Grid>
 									</Border>
 								</Grid>
@@ -345,11 +345,11 @@
 		</Setter>
 	</Style>
 
-    <!--********************** Implicit Styles *********************** -->
-    <Style BasedOn="{StaticResource LabelStyle}" TargetType="sdk:Label" />
-    <Style BasedOn="{StaticResource TabControlStyle}" TargetType="sdk:TabControl" />
-    <Style BasedOn="{StaticResource TabItemStyle}" TargetType="sdk:TabItem" />
-    <Style BasedOn="{StaticResource GridSplitterStyle}" TargetType="sdk:GridSplitter" />
-    <Style BasedOn="{StaticResource AutoCompleteBoxStyle}" TargetType="sdk:AutoCompleteBox" />
-    
+	<!--********************** Implicit Styles *********************** -->
+	<Style BasedOn="{StaticResource LabelStyle}" TargetType="sdk:Label" />
+	<Style BasedOn="{StaticResource TabControlStyle}" TargetType="sdk:TabControl" />
+	<Style BasedOn="{StaticResource TabItemStyle}" TargetType="sdk:TabItem" />
+	<Style BasedOn="{StaticResource GridSplitterStyle}" TargetType="sdk:GridSplitter" />
+	<Style BasedOn="{StaticResource AutoCompleteBoxStyle}" TargetType="sdk:AutoCompleteBox" />
+	
 </ResourceDictionary>

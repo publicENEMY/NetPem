@@ -3,6 +3,16 @@
              x:Class="SilverlightClient.App"
              >
     <Application.Resources>
-        
+        <Style x:Key="HeaderTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="22" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="Foreground" Value="#FF00AADE" />
+        </Style>
+
+        <Style x:Key="SubHeaderTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="Foreground" Value="#FF00AADE" />
+        </Style>
     </Application.Resources>
 </Application>
