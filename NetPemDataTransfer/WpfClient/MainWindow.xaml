@@ -1,8 +1,8 @@
-﻿<Window x:Class="WpfServer.MainWindow"
+﻿<Window x:Class="WpfClient.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="clr-namespace:WpfServer" 
-        Title="Server" Height="350" Width="525" Closed="Window_Closed">
+        xmlns:local="clr-namespace:WpfClient" 
+        Title="Client" Height="350" Width="525">
     <Window.Resources>
         <Style TargetType="{x:Type ListBoxItem}">
             <Style.Triggers>
@@ -31,19 +31,18 @@
         </DataTemplate>
     </Window.Resources>
     <Grid>
-        <StackPanel Margin="0,0,0,140" >
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Collapsed" >
+        <StackPanel Margin="0,0,0,212" >
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
                 <TextBlock TextWrapping="Wrap" Text="Server ip" VerticalAlignment="Center"/>
                 <TextBox Height="23" TextWrapping="Wrap" Text="TextBox" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Visibility="Collapsed" >
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
                 <TextBlock TextWrapping="Wrap" Text="Server port" VerticalAlignment="Center"/>
                 <TextBox Height="23" TextWrapping="Wrap" Text="TextBox" />
             </StackPanel>
-            <Button x:Name="Server" Content="Start server" Click="Server_Click"/>
-            <ListBox x:Name="ConnectedClientsListBox" Height="89"/>
+            <Button Content="Button" HorizontalAlignment="Left"/>
         </StackPanel>
         <ListBox ItemsSource="{Binding IncomingMessages}" 
-                     ItemTemplate="{StaticResource LogTemplate}" AlternationCount="2" local:ListBoxExt.AutoScroll="True" Margin="0,183,0,0"/>
+                     ItemTemplate="{StaticResource LogTemplate}" AlternationCount="2" local:ListBoxExt.AutoScroll="True" Margin="0,116,0,0"/>
     </Grid>
 </Window>

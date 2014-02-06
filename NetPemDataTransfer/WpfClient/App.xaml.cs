@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using NLog;
 
-namespace WpfServer
+namespace WpfClient
 {
 	/// <summary>
 	/// Interaction logic for App.xaml

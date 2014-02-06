@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfServer", "WpfServer\WpfServer.csproj", "{D46B3B19-D9CE-4ECF-9D50-44A1BCA3F6B2}"
 EndProject
@@ -9,22 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightClient", "Silver
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SilverlightClient.Web", "SilverlightClient.Web\SilverlightClient.Web.csproj", "{2CE22F3A-EC5E-4BFC-AD0D-DF18502D041C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfClient", "WpfClient\WpfClient.csproj", "{4280F1F9-7B3F-4EFC-8A58-B0680DBFFC2F}"
+EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://dellserver-pc:8080/tfs/netpem
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = WpfServer\\WpfServer.csproj
-		SccProjectName1 = WpfServer
-		SccLocalPath1 = WpfServer
-		SccProjectUniqueName2 = SilverlightClient\\SilverlightClient.csproj
-		SccProjectName2 = SilverlightClient
-		SccLocalPath2 = SilverlightClient
-		SccProjectUniqueName3 = SilverlightClient.Web\\SilverlightClient.Web.csproj
-		SccProjectName3 = SilverlightClient.Web
-		SccLocalPath3 = SilverlightClient.Web
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -42,6 +29,10 @@ Global
 		{2CE22F3A-EC5E-4BFC-AD0D-DF18502D041C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CE22F3A-EC5E-4BFC-AD0D-DF18502D041C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CE22F3A-EC5E-4BFC-AD0D-DF18502D041C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4280F1F9-7B3F-4EFC-8A58-B0680DBFFC2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4280F1F9-7B3F-4EFC-8A58-B0680DBFFC2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4280F1F9-7B3F-4EFC-8A58-B0680DBFFC2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4280F1F9-7B3F-4EFC-8A58-B0680DBFFC2F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
