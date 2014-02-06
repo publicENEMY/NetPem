@@ -33,6 +33,10 @@ namespace StreamingClientNavigation.Views
 			_debugMode = false;
 #endif
 
+			// hides the player until proper window size is aquired
+			PlayerWindow.Visibility = Visibility.Collapsed;
+
+
 			// manual override
 			//debugPanel.Visibility = Visibility.Visible;
 			//_debugMode = false;
@@ -41,9 +45,15 @@ namespace StreamingClientNavigation.Views
 		}
 
 		#region Configuration
+
+		// Entry point
 		// Executes when the user navigates to this page.
 		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
+			// resize player window
+			//UpdatePlayerWindowSize();
+
+			// uncomment desired streaming media
 			//Streaming1080p();
 			//Streaming720p();
 			//Streaming480p();
@@ -51,6 +61,7 @@ namespace StreamingClientNavigation.Views
 		}
 
 		// constants
+		// fixed file size
 		private const int FileSize1080P = 16504233;
 		private const int FileSize720P = 8508132;
 		private const int FileSize480P = 4376444;
@@ -219,12 +230,6 @@ namespace StreamingClientNavigation.Views
 			}
 		}
 
-		private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
-		{
-			Log("Window size changed");
-			UpdatePlayerWindowSize();
-		}
-
 		void UpdatePlayerWindowSize()
 		{
 			MediaPlayer.MaxHeight = ActualHeight - (ProgressBarGrid.ActualHeight + PlayerPanel.ActualHeight + StatusBar.ActualHeight + 25);
@@ -247,6 +252,10 @@ namespace StreamingClientNavigation.Views
 			//Log("PlayerWindow.ActualHeight = " + PlayerWindow.ActualHeight);
 			//Log("PlayerWindow.ActualWidth = " + PlayerWindow.ActualWidth);
 
+#if DEBUG
+			debugPanel.MaxWidth = PlayerWindow.MaxWidth;
+#else
+#endif
 			Log("Updated window size");
 		}
 
@@ -318,6 +327,10 @@ namespace StreamingClientNavigation.Views
 			//resize player window
 			UpdatePlayerWindowSize();
 
+			// show player window once correct player size has been acquired
+			PlayerWindow.Visibility = Visibility.Visible;
+
+
 			// reset counter
 			//_rebuffering = 0;
 			//_droppedFrames = 0;
@@ -360,7 +373,7 @@ namespace StreamingClientNavigation.Views
 		{
 			Log("Media player loaded");
 			StatusBar.Text = "Media player loaded";
-			UpdatePlayerWindowSize();
+			//UpdatePlayerWindowSize();
 		}
 
 		private double excessDownloaded = 0;
@@ -541,7 +554,7 @@ namespace StreamingClientNavigation.Views
 			Log("1080p media selected");
 			StatusBar.Text = "Streaming 1080p media";
 			StartStack.Children.Clear();
-			PlayerWindow.Visibility = Visibility.Visible;
+			//PlayerWindow.Visibility = Visibility.Visible;
 			ResetVariables();
 
 			// query file size from server
@@ -556,7 +569,7 @@ namespace StreamingClientNavigation.Views
 			Log("720p media selected");
 			StatusBar.Text = "Streaming 720p media";
 			StartStack.Children.Clear();
-			PlayerWindow.Visibility = Visibility.Visible;
+			//PlayerWindow.Visibility = Visibility.Visible;
 			ResetVariables();
 
 			// query file size from server
@@ -571,7 +584,7 @@ namespace StreamingClientNavigation.Views
 			Log("480p media selected");
 			StatusBar.Text = "Streaming 480p media";
 			StartStack.Children.Clear();
-			PlayerWindow.Visibility = Visibility.Visible;
+			//PlayerWindow.Visibility = Visibility.Visible;
 			ResetVariables();
 
 			// query file size from server
@@ -586,7 +599,7 @@ namespace StreamingClientNavigation.Views
 			Log("360p media selected");
 			StatusBar.Text = "Streaming 360p media";
 			StartStack.Children.Clear();
-			PlayerWindow.Visibility = Visibility.Visible;
+			//PlayerWindow.Visibility = Visibility.Visible;
 			ResetVariables();
 
 			// query file size from server

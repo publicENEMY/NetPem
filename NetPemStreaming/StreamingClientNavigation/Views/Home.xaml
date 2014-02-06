@@ -504,6 +504,9 @@
                                     <Ellipse HorizontalAlignment="Center" Height="54" VerticalAlignment="Center" Width="54" Fill="Black" Opacity="0.5"/>
                                     <Path x:Name="Path2" Width="27" Height="30" Canvas.Left="0" Canvas.Top="0" Stretch="Fill" Data="M 0,0L 0,21.3333L 13.3333,10.6667L 0,0 Z " Fill="White" Margin="4,0,0,0"/>
                                 </Grid>
+                                <Grid Margin="113,271,113,183" Background="#7F000000">
+                                	<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="Start Your Test" VerticalAlignment="Center" Foreground="White"/>
+                                </Grid>
                             </Grid>
                         </Border>
                     </ControlTemplate>
@@ -537,15 +540,15 @@
                     </Border>
                     <Grid Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <StackPanel Orientation="Vertical">
-                            <!--<Border x:Name="Card" CornerRadius="2" BorderThickness="1" Margin="4" Width="400">
-                                <Border.BorderBrush>
+                            <Border x:Name="Card" CornerRadius="2" BorderThickness="1" Margin="4" Width="400">
+                                <!--<Border.BorderBrush>
                                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                         <GradientStop Color="#FFA4A4A4" Offset="0"/>
                                         <GradientStop Color="White" Offset="1"/>
                                     </LinearGradientBrush>
-                                </Border.BorderBrush>
+                                </Border.BorderBrush>-->
                                 <StackPanel>
-                                    <Grid VerticalAlignment="Top">
+                                    <!--<Grid VerticalAlignment="Top">
                                         <Grid.Background>
                                             <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
                                                 <GradientStop Color="#FFFFC131"/>
@@ -553,34 +556,50 @@
                                             </LinearGradientBrush>
                                         </Grid.Background>
                                         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Foreground="White" Margin="8" Text="How it works?" FontSize="16"/>
-                                    </Grid>
+                                    </Grid>-->
                                     <Grid>
-                                        <Grid.Background>
+                                        <!--<Grid.Background>
                                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                                 <GradientStop Color="White" Offset="0"/>
                                                 <GradientStop Color="#FFCDCDCD" Offset="1"/>
                                             </LinearGradientBrush>
-                                        </Grid.Background>
+                                        </Grid.Background>-->
                                         <RichTextBox Foreground="Black" BorderThickness="0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="8" IsReadOnly="True" FontSize="13.333">
                                             <Paragraph>
-                                                <Run Text="A video is streamed to your pc. "/>
-                                                <Run Text="The number of rebuffering and dropped frames captured during streaming session is then compared to a baseline. "/>
-                                                <Run Text="If your number fares better than the baseline, then your streaming experience is GOOD."/>
+                                                <Run Text="Instruction:"/>
                                             </Paragraph>
                                             <Paragraph/>
                                             <Paragraph>
-                                                <Run Text="The whole process takes about 30 seconds; depending on your pc and network performance. "/>
+                                                <Run Text="The streaming test will stream a 30 seconds video and perform analysis on the streaming process. You will need to press the 'Start Your Test' button to start the streaming test and once the streaming has completed, you should then rate the streaming experience by clicking the emotion icon. This process is repeated until all 4 media has been played and rated. When all streaming media has been played, we will have a short break."/>
                                             </Paragraph>
                                             <Paragraph/>
+                                            <Paragraph>
+                                                <Run Text="Following are the resolution of the streaming media that will be tested: "/>
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="1. 360p"/>
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="2. 480p"/>
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="3. 720p"/>
+                                            </Paragraph>
+                                            <Paragraph>
+                                                <Run Text="4. 1080p"/>
+                                            </Paragraph>
                                             <Paragraph/>
+                                            <Paragraph>
+                                                <Run Text="Your task is to judge the overall streaming experience. There is no right answer in this task; just rely on your own judgment."/>
+                                            </Paragraph>
                                         </RichTextBox>
                                     </Grid>
                                 </StackPanel>
-                            </Border>-->
-                            <Grid Height="42"/>
+                            </Border>
+                            <!--<Grid Height="42"/>
                             <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <toolkit:Accordion HorizontalAlignment="Center" Width="400" SelectionSequence="CollapseBeforeExpand" SelectionMode="ZeroOrMore">
-                                    <!--<toolkit:AccordionItem Header="What is streaming experience?" Style="{StaticResource AccordionItemStyle}">
+                                    --><!--<toolkit:AccordionItem Header="What is streaming experience?" Style="{StaticResource AccordionItemStyle}">
                                         <RichTextBox VerticalScrollBarVisibility="Auto" Height="112" Padding="8" IsReadOnly="True" BorderThickness="0" Background="{x:Null}" >
                                             <Paragraph>
                                                 <Run Text="Streaming experience is defined as the impression a person feel after undergo a video streaming event. While we dont technically measure a person emotional feelings, we do measure the technicalities that contributes to the streaming experience. Streaming experience is rated as either GOOD or POOR."/>
@@ -671,7 +690,7 @@
                                                 <Run Text="Khalil Huzairi bin Ahmad"/>
                                             </Paragraph>
                                         </RichTextBox>
-                                    </toolkit:AccordionItem>-->
+                                    </toolkit:AccordionItem>--><!--
 
                                     <toolkit:AccordionItem Header="Lorem ipsum dolor sit amet" Style="{StaticResource AccordionItemStyle}">
                                         <RichTextBox VerticalScrollBarVisibility="Auto" Height="112" Padding="8" IsReadOnly="True" BorderThickness="0" Background="{x:Null}" >
@@ -725,7 +744,7 @@
                                     </toolkit:AccordionItem>
 
                                 </toolkit:Accordion>
-                            </Grid>
+                            </Grid>-->
                         </StackPanel>
                     </Grid>
                 </Grid>
