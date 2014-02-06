@@ -6,7 +6,7 @@
 			 xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk" 
 			 xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit" 
 	mc:Ignorable="d"
-	d:DesignHeight="300" d:DesignWidth="400">
+	d:DesignHeight="800" d:DesignWidth="700">
 
 	<UserControl.Resources>
 		<ResourceDictionary>
@@ -32,37 +32,79 @@
 		</ResourceDictionary>
 	</UserControl.Resources>
 
-
-	<Grid x:Name="LayoutRoot" Background="White">
-		<StackPanel  >
-			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-				<Button x:Name="Download1MBButton" Content="Download 1MB" Click="Download1MB"/>
-				<Button x:Name="Download5MBButton" Content="Download 5MB" Click="Download5MB"/>
-				<Button x:Name="Download10MBButton" Content="Download 10MB" Click="Download10MB"/>
-				<Button x:Name="Download50MBButton" Content="Download 50MB" Click="Download50MB"/>
-				<Button x:Name="Download100MBButton" Content="Download 100MB" Click="Download100MB"/>
-			</StackPanel>
-			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-				<Button x:Name="Upload1MBButton" Content="Upload 1MB" Click="Upload1MB"/>
-				<Button x:Name="Upload5MBButton" Content="Upload 5MB" Click="Upload5MB"/>
-				<Button x:Name="Upload10MBButton" Content="Upload 10MB" Click="Upload10MB"/>
-				<Button x:Name="Upload50MBButton" Content="Upload 50MB" Click="Upload50MB"/>
-				<Button x:Name="Upload100MBButton" Content="Upload 100MB" Click="Upload100MB"/>
-			</StackPanel>
-			<ProgressBar x:Name="TransferProgressBar" IsIndeterminate="True" Width="200" Height="8" Opacity="0" />
-			<TextBlock x:Name="StatusBar" TextWrapping="Wrap" Text="" HorizontalAlignment="Center"/>
-			<StackPanel x:Name="debugPanel">
-				<Button Content="Invoke Download Javascript" Click="SendDownloadResultsToJs" />
-				<Button Content="Invoke Upload Javascript" Click="SendUploadResultsToJs" />
-				<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
-					<TextBlock TextWrapping="Wrap" Text="Server ip" VerticalAlignment="Center"/>
-					<TextBox x:Name="serverIP" Height="23" TextWrapping="Wrap" MinWidth="150" Text="219.93.8.10" />
+	<ScrollViewer>
+		<Grid x:Name="LayoutRoot" Background="White">
+			<StackPanel  >
+				<RichTextBox Foreground="Black" BorderThickness="0" Background="{x:Null}" BorderBrush="{x:Null}" Padding="50" IsReadOnly="True" FontSize="13.333">
+					<Paragraph>
+						<Run Text="Instructions:"/>
+					</Paragraph>
+					<Paragraph>
+					</Paragraph>
+					<Paragraph>
+						<Run Text="The Downloading/Uploading test will download/upload data from/to server, simulating file downloading and uploading process. During the process, network performance is captured and recorded. You will need to press the 'Start Your Test' button to start the downloading/uploading process and once the process has completed, you should then rate the downloading/uploading experience by clicking the emotion icon. The same downloading/uploading process will be repeated until all download/upload scenario is completed. After that we will have a short break."/>
+					</Paragraph>
+					<Paragraph>
+					</Paragraph>
+					<Paragraph>
+						<Run Text="Following are the downloading/uploading scenario(different file size) that have to be tested:"/>
+					</Paragraph>
+					<Paragraph>
+						<Run Text="1. 1 Megabytes"/>
+					</Paragraph>
+					<Paragraph>
+						<Run Text="2. 5 Megabytes"/>
+					</Paragraph>
+					<Paragraph>
+						<Run Text="3. 10 Megabytes"/>
+					</Paragraph>
+					<Paragraph>
+					</Paragraph>
+					<Paragraph>
+						<Run Text="Your task is to judge the overall waiting time for the download/upload to complete. There is no right answer in this task; just rely on your own judgment."/>
+					</Paragraph>
+				</RichTextBox>
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+					<Button x:Name="Download1MBButton" Content="Start Your Test" Click="Download1MB"/>
+					<Button x:Name="Download5MBButton" Content="Start Your Test" Click="Download5MB"/>
+					<Button x:Name="Download10MBButton" Content="Start Your Test" Click="Download10MB"/>
+					<Button x:Name="Download50MBButton" Content="Start Your Test" Click="Download50MB"/>
+					<Button x:Name="Download100MBButton" Content="Start Your Test" Click="Download100MB"/>
 				</StackPanel>
-				<Button Content="Clear logs" Click="ClearLogs_Click"/>
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+					<Button x:Name="Upload1MBButton" Content="Start Your Test" Click="Upload1MB"/>
+					<Button x:Name="Upload5MBButton" Content="Start Your Test" Click="Upload5MB"/>
+					<Button x:Name="Upload10MBButton" Content="Start Your Test" Click="Upload10MB"/>
+					<Button x:Name="Upload50MBButton" Content="Start Your Test" Click="Upload50MB"/>
+					<Button x:Name="Upload100MBButton" Content="Start Your Test" Click="Upload100MB"/>
+				</StackPanel>
+				<ProgressBar x:Name="TransferProgressBar" IsIndeterminate="True" Width="200" Height="8" Opacity="0" />
+				<TextBlock x:Name="StatusBar" TextWrapping="Wrap" Text="" HorizontalAlignment="Center"/>
+				<StackPanel x:Name="debugPanel">
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+					<Button Content="Download 1MB" Click="Download1MB"/>
+					<Button Content="Download 5MB" Click="Download5MB"/>
+					<Button Content="Download 10MB" Click="Download10MB"/>
+					<Button Content="Download 50MB" Click="Download50MB"/>
+					<Button Content="Download 100MB" Click="Download100MB"/>
+				</StackPanel>
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+					<Button Content="Upload 1MB" Click="Upload1MB"/>
+					<Button Content="Upload 5MB" Click="Upload5MB"/>
+					<Button Content="Upload 10MB" Click="Upload10MB"/>
+					<Button Content="Upload 50MB" Click="Upload50MB"/>
+					<Button Content="Upload 100MB" Click="Upload100MB"/>
+				</StackPanel>
+					<Button Content="Invoke Download Javascript" Click="SendDownloadResultsToJs" />
+					<Button Content="Invoke Upload Javascript" Click="SendUploadResultsToJs" />
+					<StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" >
+						<TextBlock TextWrapping="Wrap" Text="Server ip" VerticalAlignment="Center"/>
+						<TextBox x:Name="serverIP" Height="23" TextWrapping="Wrap" MinWidth="150" Text="219.93.8.10" />
+					</StackPanel>
+					<Button Content="Clear logs" Click="ClearLogs_Click"/>
+				</StackPanel>
+				<ListBox x:Name="LogListBox" MaxHeight="300" />
 			</StackPanel>
-		</StackPanel>
-
-		<ListBox x:Name="LogListBox" Margin="10,170,10,10" />
-
-	</Grid>
+		</Grid>
+	</ScrollViewer>
 </UserControl>
