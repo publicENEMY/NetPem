@@ -37,7 +37,7 @@ namespace StreamingClientNavigation.Views
 			PlayerWindow.Visibility = Visibility.Collapsed;
 
 			// initially hides skip test button 
-			SkipTestButton.Visibility = Visibility.Collapsed;
+			//SkipTestButton.Visibility = Visibility.Collapsed;
 
 			// manual override
 			//debugPanel.Visibility = Visibility.Visible;
@@ -71,14 +71,15 @@ namespace StreamingClientNavigation.Views
 		private const int FileSize720P = 8508132;
 		private const int FileSize480P = 4376444;
 		private const int FileSize360P = 2243895;
-		private string _timeout = string.Empty;
 
 		// get timeout details
 		private void ReadQueryString()
 		{
+			string timeout = string.Empty;
 			if (HtmlPage.Document.QueryString.ContainsKey("timeout"))
 			{
-				_timeout = HtmlPage.Document.QueryString["timeout"];
+				timeout = HtmlPage.Document.QueryString["timeout"];
+				_timeout = int.Parse(timeout);
 			}
 
 			Log("Timeout " + _timeout);
@@ -189,6 +190,12 @@ namespace StreamingClientNavigation.Views
 		// playback duration
 		private double _duration = 0;
 
+		// timeout in seconds
+		private int _timeout = 0;
+
+		// flag to notify others of timeout status
+		private bool _isTimedout = false;
+
 		DispatcherTimer _stateUpdate = new DispatcherTimer();
 
 		private void InitializeMediaPlayer()
@@ -208,7 +215,7 @@ namespace StreamingClientNavigation.Views
 			MediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
 			MediaPlayer.MediaFailed += MediaPlayer_MediaFailed;
 			MediaPlayer.MediaOpened += MediaPlayer_MediaOpened;
-			MediaPlayer.RateChanged += MediaPlayer_RateChanged;
+			MediaPlayer.RateChanged += MediaPlayer_RateChanged;			
 
 			//PlayerWindow.Visibility = Visibility.Collapsed;
 
@@ -239,7 +246,7 @@ namespace StreamingClientNavigation.Views
 
 			if (_debugMode)
 			{
-				//Log("PlaybackUpdates");
+				// Log("PlaybackUpdates");
 				// updates ui
 				DurationTextBox.Text = _duration.ToString();
 				DroppedFpsTextBox.Text = MediaPlayer.DroppedFramesPerSecond.ToString();
@@ -314,11 +321,15 @@ namespace StreamingClientNavigation.Views
 			}
 		}
 
+		// playback duration. will stopped when media finished
 		Stopwatch _playbackDurationStopwatch = new Stopwatch();
 
 		// used to calculate bandwidth
 		Stopwatch _downloadProgressStopwatch = new Stopwatch();
 
+		// timeout Timer
+		DispatcherTimer _timeoutDispatcherTimer = new DispatcherTimer();
+		
 		// file size
 		private long _mediaFileSize = 0;
 
@@ -326,6 +337,7 @@ namespace StreamingClientNavigation.Views
 		{
 			_playbackDurationStopwatch.Stop();
 			_downloadProgressStopwatch.Stop();
+			//_timeoutDispatcherTimer.Stop();
 			if (_debugMode)
 			{
 				Log("Stopped all stopwatch");
@@ -369,9 +381,19 @@ namespace StreamingClientNavigation.Views
 
 		void MediaPlayer_MediaEnded(object sender, RoutedEventArgs e)
 		{
+			MediaEnded();
+		}
+
+		void MediaEnded()
+		{
 			_duration = ((double)_playbackDurationStopwatch.ElapsedMilliseconds / 1000);
+			Log("Stopped duration timer");
 			_playbackDurationStopwatch.Stop();
+			Log("Stopped state update timer");
 			_stateUpdate.Stop();
+			Log("Stopped timeout timer");
+			_timeoutDispatcherTimer.Stop();
+			_isTimedout = true;
 
 			if (_debugMode)
 			{
@@ -380,7 +402,7 @@ namespace StreamingClientNavigation.Views
 
 			Log("Media playback ended");
 			StatusBar.Text = "Media playback ended";
-			ProceedToNextPage();
+			ProceedToNextPage();			
 		}
 
 		void MediaPlayer_LogReady(object sender, LogReadyRoutedEventArgs e)
@@ -392,12 +414,36 @@ namespace StreamingClientNavigation.Views
 			Log("Media player loaded");
 			StatusBar.Text = "Media player loaded";
 			//UpdatePlayerWindowSize();
+
+			//if (!_timeoutDispatcherTimer.IsEnabled)
+			//{
+			//	Log("Start timeout timer");
+			//	_timeoutDispatcherTimer.Interval = new TimeSpan(0, 0, _timeout);
+			//	_timeoutDispatcherTimer.Tick += (o, args) =>
+			//	{
+			//		Log("Timeout!");
+			//		// TODO:do timeout stuff
+			//		_timeoutDispatcherTimer.Stop();
+			//		// force media playback to end
+			//		_isTimedout = true;
+			//		MediaPlayer.Stop();
+			//		MediaEnded();
+			//	};
+			//	_timeoutDispatcherTimer.Stop(); // resets the timer
+			//	_timeoutDispatcherTimer.Start();
+			//}
+
 		}
 
 		private double excessDownloaded = 0;
 		private double lastBandwidth;
 		void MediaPlayer_DownloadProgressChanged(object sender, RoutedEventArgs e)
 		{
+			//// ugly workaround
+			//if (_isTimedout)
+			//{
+			//	return;
+			//}
 			if (!_stateUpdate.IsEnabled)
 			{
 				Log("Start playback update timer");

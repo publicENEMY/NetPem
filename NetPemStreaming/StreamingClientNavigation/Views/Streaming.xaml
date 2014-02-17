@@ -22,7 +22,6 @@
                             <StackPanel x:Name="PlayerPanel" Height="23" Visibility="Collapsed" />
                             <Grid x:Name="StatusGrid" Background="Black" Height="23" Visibility="Visible" >
                                 <TextBlock x:Name="StatusBar" TextWrapping="Wrap" Height="16" Foreground="White" Text="Stand by" Margin="4,0,0,0"/>
-                                <Button x:Name="SkipTestButton" Content="Skip and rate the worst" HorizontalAlignment="Right" Width="175" VerticalAlignment="Center" Click="SkipTestButton_Click"/>
                             </Grid>
                         </StackPanel>
                     </Border>
