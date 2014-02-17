@@ -6,7 +6,7 @@
            mc:Ignorable="d"
            xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit" 
            xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
-           d:DesignWidth="640" d:DesignHeight="1000" SizeChanged="Streaming_OnSizeChanged"
+           d:DesignWidth="740" d:DesignHeight="1000" SizeChanged="Streaming_OnSizeChanged"
            Title="Streaming Page">
     <Grid x:Name="LayoutRoot" >
         <ScrollViewer x:Name="PageScrollViewer" >
@@ -22,6 +22,7 @@
                             <StackPanel x:Name="PlayerPanel" Height="23" Visibility="Collapsed" />
                             <Grid x:Name="StatusGrid" Background="Black" Height="23" Visibility="Visible" >
                                 <TextBlock x:Name="StatusBar" TextWrapping="Wrap" Height="16" Foreground="White" Text="Stand by" Margin="4,0,0,0"/>
+                                <Button x:Name="SkipTestButton" Content="Skip and rate the worst" HorizontalAlignment="Right" Width="175" VerticalAlignment="Center" Click="SkipTestButton_Click"/>
                             </Grid>
                         </StackPanel>
                     </Border>

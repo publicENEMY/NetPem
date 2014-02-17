@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Windows;
+using System.Windows.Browser;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -25,7 +26,6 @@ namespace StreamingClientNavigation
 #else
 			NavigationGrid.Visibility = Visibility.Collapsed;
 #endif
-
 		}
 
 		// After the Frame navigates, ensure the HyperlinkButton representing the current page is selected

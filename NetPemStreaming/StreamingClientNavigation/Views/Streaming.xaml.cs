@@ -36,6 +36,8 @@ namespace StreamingClientNavigation.Views
 			// hides the player until proper window size is aquired
 			PlayerWindow.Visibility = Visibility.Collapsed;
 
+			// initially hides skip test button 
+			SkipTestButton.Visibility = Visibility.Collapsed;
 
 			// manual override
 			//debugPanel.Visibility = Visibility.Visible;
@@ -50,6 +52,9 @@ namespace StreamingClientNavigation.Views
 		// Executes when the user navigates to this page.
 		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
+			// get values from html
+			ReadQueryString();
+
 			// resize player window
 			//UpdatePlayerWindowSize();
 
@@ -66,6 +71,19 @@ namespace StreamingClientNavigation.Views
 		private const int FileSize720P = 8508132;
 		private const int FileSize480P = 4376444;
 		private const int FileSize360P = 2243895;
+		private string _timeout = string.Empty;
+
+		// get timeout details
+		private void ReadQueryString()
+		{
+			if (HtmlPage.Document.QueryString.ContainsKey("timeout"))
+			{
+				_timeout = HtmlPage.Document.QueryString["timeout"];
+			}
+
+			Log("Timeout " + _timeout);
+		}
+
 		#endregion
 
 		#region Log
@@ -653,6 +671,11 @@ namespace StreamingClientNavigation.Views
 		{
 			Log("Window size changed");
 			UpdatePlayerWindowSize();
+		}
+
+		private void SkipTestButton_Click(object sender, System.Windows.RoutedEventArgs e)
+		{
+			// TODO: Add event handler implementation here.
 		}
 	}
 }
