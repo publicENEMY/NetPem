@@ -306,7 +306,12 @@ namespace StreamingClientNavigation.Views
 			}
 
 			// updates timeout eta at status bar
-			TimeoutBar.Text = "Timeout in " + (_timeoutDuration - _duration - 1).ToString("F0") + " s";
+			double timeoutEta = _timeoutDuration - _duration - 1;
+			if (timeoutEta < 0)
+			{
+				timeoutEta = 0;
+			}
+			TimeoutBar.Text = "Timeout in " + (timeoutEta).ToString("F0") + " s";
 		}
 
 		void UpdatePlayerWindowSize()
@@ -576,7 +581,7 @@ namespace StreamingClientNavigation.Views
 			{
 				BufferingProgressTextBox.Text = MediaPlayer.BufferingProgress.ToString();
 			}
-			StatusBar.Text = "Buffering " + (MediaPlayer.BufferingProgress * 100) + "%";
+			StatusBar.Text = "Buffering " + (MediaPlayer.BufferingProgress * 100).ToString("F0") + "%";
 		}
 
 		void ProceedToNextPage()
