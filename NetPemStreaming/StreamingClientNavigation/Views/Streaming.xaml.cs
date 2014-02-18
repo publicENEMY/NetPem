@@ -304,6 +304,9 @@ namespace StreamingClientNavigation.Views
 				RenderedFpsTextBox.Text = MediaPlayer.RenderedFramesPerSecond.ToString();
 				MediaFpsTextBox.Text = (MediaPlayer.DroppedFramesPerSecond + MediaPlayer.RenderedFramesPerSecond).ToString();
 			}
+
+			// updates timeout eta at status bar
+			TimeoutBar.Text = "Timeout in " + (_timeoutDuration - _duration - 1).ToString("F0") + " s";
 		}
 
 		void UpdatePlayerWindowSize()
