@@ -57,12 +57,13 @@
 		}
 	</script>
 	<script type="text/javascript">
-		function ProcessStreamingResults(buffer, frame, bandwidth, duration) {
+		function ProcessStreamingResults(buffer, frame, bandwidth, duration, timeout) {
 			alert(
 			"Buffer:" + buffer + "\n" +
 			"Frame:" + frame + "\n" +
 			"Bandwidth:" + bandwidth + "\n" +
-			"Duration:" + duration + "\n"
+			"Duration:" + duration + "\n" + 
+			"Timeout:" + timeout + "\n" // timeout 0-success 1-timeout
 			);
 		}
 	</script>

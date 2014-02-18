@@ -79,10 +79,10 @@ namespace StreamingClientNavigation.Views
 			if (HtmlPage.Document.QueryString.ContainsKey("timeout"))
 			{
 				timeout = HtmlPage.Document.QueryString["timeout"];
-				_timeout = int.Parse(timeout);
+				_timeoutDuration = int.Parse(timeout);
 			}
 
-			Log("Timeout " + _timeout);
+			Log("Timeout " + _timeoutDuration);
 
 			InitializeTimeout();
 		}
@@ -90,7 +90,7 @@ namespace StreamingClientNavigation.Views
 		private void InitializeTimeout()
 		{
 			// initialize timeout
-			_timeoutDispatcherTimer.Interval = new TimeSpan(0, 0, _timeout);
+			_timeoutDispatcherTimer.Interval = new TimeSpan(0, 0, _timeoutDuration);
 			_timeoutDispatcherTimer.Tick += (o, args) =>
 			{
 				Log("Timeout!");
@@ -100,7 +100,7 @@ namespace StreamingClientNavigation.Views
 				// force media playback to end
 				StreamingNull();
 
-				_isTimedout = true;
+				_timeout = 1;
 				//MediaPlayer.Stop();
 				MediaEnded();
 			};
@@ -166,13 +166,9 @@ namespace StreamingClientNavigation.Views
 		// sample_360p_bandwidth
 		// sample_360p_time 
 
-		// upload download are similar
-		// sample_size1_rate - megabits?
-
-		// sample_size2_rate
-
-		// sample_size3_rate
-
+		// timeout - int
+		// 0-success
+		// 1-timeout
 		private void SendFakeStreamingResultsToJs(object sender, RoutedEventArgs e)
 		{
 			var r = new Random();
@@ -185,20 +181,22 @@ namespace StreamingClientNavigation.Views
 
 			double duration = r.Next(0, 100) + r.NextDouble();
 
+			int timeout = r.Next(0, 1);
+
 			Log("Send fake streaming results to js");
-			HtmlPage.Window.Invoke("ProcessStreamingResults", buffer, frame, bandwidth, duration);
+			HtmlPage.Window.Invoke("ProcessStreamingResults", buffer, frame, bandwidth, duration, timeout);
 		}
 
 		private void SendStreamingResultsToJs()
 		{
 			Log("Send streaming results to js");
-			HtmlPage.Window.Invoke("ProcessStreamingResults", _rebuffering, _droppedFrames, _bandwidth, _duration);
+			HtmlPage.Window.Invoke("ProcessStreamingResults", _rebuffering, _droppedFrames, _bandwidth, _duration, _timeout);
 		}
 
 		#endregion
 
-		private bool _debugMode;
-
+		#region main parameters that will be send to browser
+		
 		// total rebuffering
 		private int _rebuffering = 0;
 
@@ -211,13 +209,45 @@ namespace StreamingClientNavigation.Views
 		// playback duration
 		private double _duration = 0;
 
-		// timeout in seconds
+		// error codes
 		private int _timeout = 0;
 
-		// flag to notify others of timeout status
-		private bool _isTimedout = false;
+		#endregion
+
+		private bool _debugMode;
+
+		// timeout in seconds
+		private int _timeoutDuration = 0;
 
 		DispatcherTimer _stateUpdate = new DispatcherTimer();
+
+		// playback duration. will stopped when media finished
+		Stopwatch _playbackDurationStopwatch = new Stopwatch();
+
+		// used to calculate bandwidth
+		Stopwatch _downloadProgressStopwatch = new Stopwatch();
+
+		// timeout Timer
+		DispatcherTimer _timeoutDispatcherTimer = new DispatcherTimer();
+
+		// file size
+		private long _mediaFileSize = 0;
+
+		private double _excessDownloaded = 0;
+
+		private double _lastBandwidth;
+
+		private static string ServerPath = "http://219.93.8.3/netpem/streaming/media/";
+
+		private static string InvalidateMedia = "?query=";
+
+		private string Media360p = ServerPath + "The Adventures of Tintin- Biggest Adventure- Now Playing(360p_H.264-AAC).mp4" + InvalidateMedia;
+		
+		private string Media480p = ServerPath + "The Adventures of Tintin- Biggest Adventure- Now Playing(480p_H.264-AAC).mp4" + InvalidateMedia;
+		
+		private string Media720p = ServerPath + "The Adventures of Tintin- Biggest Adventure- Now Playing(720p_H.264-AAC).mp4" + InvalidateMedia;
+		
+		private string Media1080p = ServerPath + "The Adventures of Tintin- Biggest Adventure- Now Playing(1080p_H.264-AAC).mp4" + InvalidateMedia;
 
 		private void InitializeMediaPlayer()
 		{
@@ -335,7 +365,7 @@ namespace StreamingClientNavigation.Views
 			// reset timeout
 			_timeoutDispatcherTimer.Stop();
 
-			_isTimedout = false;
+			_timeout = 0;
 
 			if (_debugMode)
 			{
@@ -346,18 +376,6 @@ namespace StreamingClientNavigation.Views
 				LogListBox.Items.Clear();
 			}
 		}
-
-		// playback duration. will stopped when media finished
-		Stopwatch _playbackDurationStopwatch = new Stopwatch();
-
-		// used to calculate bandwidth
-		Stopwatch _downloadProgressStopwatch = new Stopwatch();
-
-		// timeout Timer
-		DispatcherTimer _timeoutDispatcherTimer = new DispatcherTimer();
-		
-		// file size
-		private long _mediaFileSize = 0;
 
 		private void StopAllStopwatch()
 		{
@@ -441,14 +459,12 @@ namespace StreamingClientNavigation.Views
 			//UpdatePlayerWindowSize();
 		}
 
-		private double excessDownloaded = 0;
-		private double lastBandwidth;
 		void MediaPlayer_DownloadProgressChanged(object sender, RoutedEventArgs e)
 		{
-			// ugly workaround
-			if (_isTimedout)
+			if (_timeout == 1)
 			{
-				Log("Unexpected still downloading even when timedout");
+				// manually catch this and exit. there should be no download when timeout.
+				Log("Unexpected: Still downloading even when timeout");
 				return;
 			}
 
@@ -480,7 +496,7 @@ namespace StreamingClientNavigation.Views
 					_downloadProgressStopwatch.Start();
 					//StartAllStopwatch();
 					// ignore downloaded bits before stopwatch is started
-					excessDownloaded = MediaPlayer.DownloadProgress;
+					_excessDownloaded = MediaPlayer.DownloadProgress;
 				}
 			}
 			else
@@ -495,7 +511,7 @@ namespace StreamingClientNavigation.Views
 					_downloadProgressStopwatch.Stop();
 				}
 				//_bandwidth = ((_mediaFileSize * MediaPlayer.DownloadProgress * 8) / (_downloadProgressStopwatch.ElapsedMilliseconds / 1000.0)) / 1000000;
-				_bandwidth = ((_mediaFileSize * (MediaPlayer.DownloadProgress - excessDownloaded) * 8) / (_downloadProgressStopwatch.ElapsedMilliseconds / 1000.0)) / 1000000;
+				_bandwidth = ((_mediaFileSize * (MediaPlayer.DownloadProgress - _excessDownloaded) * 8) / (_downloadProgressStopwatch.ElapsedMilliseconds / 1000.0)) / 1000000;
 				//_bandwidth = ((fileSize * downloadProgress) / elapsedDownloadDuration) / 1000000;
 
 				if (_debugMode)
@@ -517,15 +533,15 @@ namespace StreamingClientNavigation.Views
 
 				if (Double.IsNaN(_bandwidth))
 				{
-					_bandwidth = lastBandwidth;
+					_bandwidth = _lastBandwidth;
 				}
 				else if (_bandwidth == 0.0)
 				{
-					_bandwidth = lastBandwidth;
+					_bandwidth = _lastBandwidth;
 				}
 				else
 				{
-					lastBandwidth = _bandwidth;
+					_lastBandwidth = _bandwidth;
 				}
 			}
 		}
@@ -564,13 +580,6 @@ namespace StreamingClientNavigation.Views
 		{
 			SendStreamingResultsToJs();
 		}
-
-		private static string ServerPath = "http://219.93.8.3/netpem/streaming/media/";
-		private static string InvalidateMedia = "?query=";
-		private string Media360p = ServerPath + "The Adventures of Tintin- Biggest Adventure- Now Playing(360p_H.264-AAC).mp4" + InvalidateMedia;
-		private string Media480p = ServerPath + "The Adventures of Tintin- Biggest Adventure- Now Playing(480p_H.264-AAC).mp4" + InvalidateMedia;
-		private string Media720p = ServerPath + "The Adventures of Tintin- Biggest Adventure- Now Playing(720p_H.264-AAC).mp4" + InvalidateMedia;
-		private string Media1080p = ServerPath + "The Adventures of Tintin- Biggest Adventure- Now Playing(1080p_H.264-AAC).mp4" + InvalidateMedia;
 
 		private void GetFileSize(string url)
 		{
@@ -715,7 +724,7 @@ namespace StreamingClientNavigation.Views
 
 			if (_debugMode)
 			{
-				Log("Resetted variables");
+				Log("Reseted variables");
 				// reset debug ui
 				CurrentStateListBox.Items.Clear();
 				BandwidthListBox.Items.Clear();
@@ -778,11 +787,6 @@ namespace StreamingClientNavigation.Views
 		{
 			Log("Window size changed");
 			UpdatePlayerWindowSize();
-		}
-
-		private void SkipTestButton_Click(object sender, System.Windows.RoutedEventArgs e)
-		{
-			// TODO: Add event handler implementation here.
 		}
 	}
 }
