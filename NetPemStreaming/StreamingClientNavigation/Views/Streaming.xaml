@@ -41,7 +41,8 @@
                         <Button Content="720p" HorizontalAlignment="Center" Margin="4" VerticalAlignment="Center" Width="75" Click="StartStreaming720p_Click"/>
                         <Button Content="480p" HorizontalAlignment="Center" Margin="4" VerticalAlignment="Center" Width="75" Click="StartStreaming480p_Click"/>
                         <Button Content="360p" HorizontalAlignment="Center" Margin="4" VerticalAlignment="Center" Width="75" Click="StartStreaming360p_Click"/>
-                    </StackPanel>
+						<Button Content="null" HorizontalAlignment="Center" Margin="4" VerticalAlignment="Center" Width="75" Click="StartStreamingNull_Click"/>
+					</StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
                         <Button Content="Play" Width="75" Margin="4" Click="Play"/>
                         <Button Content="Pause" Width="75" Margin="4" Click="Pause"/>

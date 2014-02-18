@@ -83,6 +83,27 @@ namespace StreamingClientNavigation.Views
 			}
 
 			Log("Timeout " + _timeout);
+
+			InitializeTimeout();
+		}
+
+		private void InitializeTimeout()
+		{
+			// initialize timeout
+			_timeoutDispatcherTimer.Interval = new TimeSpan(0, 0, _timeout);
+			_timeoutDispatcherTimer.Tick += (o, args) =>
+			{
+				Log("Timeout!");
+				StatusBar.Text = "Timeout!";
+				// TODO:do timeout stuff
+				_timeoutDispatcherTimer.Stop();
+				// force media playback to end
+				StreamingNull();
+
+				_isTimedout = true;
+				//MediaPlayer.Stop();
+				MediaEnded();
+			};
 		}
 
 		#endregion
@@ -311,6 +332,11 @@ namespace StreamingClientNavigation.Views
 
 			StopAllStopwatch();
 
+			// reset timeout
+			_timeoutDispatcherTimer.Stop();
+
+			_isTimedout = false;
+
 			if (_debugMode)
 			{
 				Log("Resetted variables");
@@ -393,7 +419,6 @@ namespace StreamingClientNavigation.Views
 			_stateUpdate.Stop();
 			Log("Stopped timeout timer");
 			_timeoutDispatcherTimer.Stop();
-			_isTimedout = true;
 
 			if (_debugMode)
 			{
@@ -414,39 +439,30 @@ namespace StreamingClientNavigation.Views
 			Log("Media player loaded");
 			StatusBar.Text = "Media player loaded";
 			//UpdatePlayerWindowSize();
-
-			//if (!_timeoutDispatcherTimer.IsEnabled)
-			//{
-			//	Log("Start timeout timer");
-			//	_timeoutDispatcherTimer.Interval = new TimeSpan(0, 0, _timeout);
-			//	_timeoutDispatcherTimer.Tick += (o, args) =>
-			//	{
-			//		Log("Timeout!");
-			//		// TODO:do timeout stuff
-			//		_timeoutDispatcherTimer.Stop();
-			//		// force media playback to end
-			//		_isTimedout = true;
-			//		MediaPlayer.Stop();
-			//		MediaEnded();
-			//	};
-			//	_timeoutDispatcherTimer.Stop(); // resets the timer
-			//	_timeoutDispatcherTimer.Start();
-			//}
-
 		}
 
 		private double excessDownloaded = 0;
 		private double lastBandwidth;
 		void MediaPlayer_DownloadProgressChanged(object sender, RoutedEventArgs e)
 		{
-			//// ugly workaround
-			//if (_isTimedout)
-			//{
-			//	return;
-			//}
+			// ugly workaround
+			if (_isTimedout)
+			{
+				Log("Unexpected still downloading even when timedout");
+				return;
+			}
+
+			if (!_timeoutDispatcherTimer.IsEnabled)
+			{
+				Log("Start timeout timer");
+				_timeoutDispatcherTimer.Stop(); // resets the timer
+				_timeoutDispatcherTimer.Start();
+			}
+
 			if (!_stateUpdate.IsEnabled)
 			{
 				Log("Start playback update timer");
+				_stateUpdate.Stop();
 				_stateUpdate.Start();
 			}
 			if (!_playbackDurationStopwatch.IsRunning)
@@ -602,7 +618,14 @@ namespace StreamingClientNavigation.Views
 				StatusBar.Text = "Filesize aquired";
 				Log("Assigning source to media player");
 				StatusBar.Text = "Initiating media player";
-				MediaPlayer.Source = new Uri(url + r.Next());
+				if (url == string.Empty)
+				{
+					MediaPlayer.ClearValue(MediaElement.SourceProperty);
+				}
+				else
+				{
+					MediaPlayer.Source = new Uri(url + r.Next());					
+				}
 			}));			
 		}
 
@@ -673,6 +696,39 @@ namespace StreamingClientNavigation.Views
 			StatusGrid.Visibility = Visibility.Visible;
 		}
 
+		// streaming null source. AFAIK, the only way to stop downloadig 
+		// process is to change the source to null
+		void StreamingNull()
+		{
+			Log("null media selected");
+			//StatusBar.Text = "Timeout!";
+			StartStack.Children.Clear();
+			//PlayerWindow.Visibility = Visibility.Visible;
+			
+			// Dont use reset variables. use custom.
+			//ResetVariables();
+
+			// file size
+			_mediaFileSize = 0;
+
+			StopAllStopwatch();
+
+			if (_debugMode)
+			{
+				Log("Resetted variables");
+				// reset debug ui
+				CurrentStateListBox.Items.Clear();
+				BandwidthListBox.Items.Clear();
+				//LogListBox.Items.Clear();
+			}
+
+			// query file size from server
+			//GetFileSize(Media360p);
+			SetFileSizeAndSource(string.Empty, 0);
+
+			StatusGrid.Visibility = Visibility.Visible;
+		}
+
 		private void StartStreaming1080p_Click(object sender, RoutedEventArgs e)
 		{
 			Streaming1080p();
@@ -691,6 +747,11 @@ namespace StreamingClientNavigation.Views
 		private void StartStreaming360p_Click(object sender, RoutedEventArgs e)
 		{
 			Streaming360p();
+		}
+
+		private void StartStreamingNull_Click(object sender, RoutedEventArgs e)
+		{
+			StreamingNull();
 		}
 
 		private void Pause(object sender, RoutedEventArgs e)
